@@ -1,0 +1,6 @@
+{
+    "liveSassCompile.settings.includeItems": [
+        "./css"
+    ],
+    "liveServer.settings.port": 5501
+}

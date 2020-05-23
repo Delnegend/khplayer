@@ -1,0 +1,115 @@
+$mainColor: #12dd12;
+$EmbedKHPPlaylistWidthWhenNormal: 50%;
+$EmbedKHPPlaylistWidthWhenFullScreen: 30%;
+$transition: .4s ease-out;
+$fullScreenCaptionsSize: 30px;
+
+
+.KHPPlaylistContainer {
+  border-radius: 0 0 5px 5px;
+  max-height: 15rem;
+  margin-top: 0px;
+  box-shadow: 0 2px 10px -7px #000;
+  transition: box-shadow $transition;
+
+  &:hover {
+    box-shadow: 0 2px 10px -5px #000;
+  }
+}
+
+.EmbedKHPPlaylist {
+  margin-top: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  max-width: 100%;
+  width: 400px;
+  z-index: 3;
+  opacity: 1;
+  transition: transform $transition;
+  &.hideEmbedKHPPlaylist {
+    transition: transform $transition;
+    transform: translateX(-100%);
+  }
+}
+
+.KHPPlaylistContainer,
+div.plyr {
+  font-family: "Noto Sans", Segoe UI, Helvetica, sans-serif;
+}
+
+.KHPPlaylistContainer,
+.EmbedKHPPlaylist {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: .2rem;
+  list-style-type: none;
+  overflow: auto;
+  li {
+    padding: .5rem;
+    margin: .4rem;
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    user-select: none;
+    transition-property: color, background-color;
+    transition-duration: .2s;
+
+    &:hover {
+      color: $mainColor;
+      opacity: 1;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #fff;
+    background: $mainColor;
+    width: 6px !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-border-radius: 10px;
+  }
+}
+
+
+.plyr:-webkit-full-screen {
+  .plyr__captions {
+    font-size: $fullScreenCaptionsSize !important;
+  }
+
+  // .EmbedKHPPlaylist {
+  //   max-width: 100%;
+  //   width: 450px;
+  // }
+}
+
+.plyr {
+  --plyr-color-main: #12dd12;
+  --plyr-font-size-base: 40px;
+  --plyr-font-smoothing: true;
+  --plyr-font-size-smal: 40px;
+  border-radius: 5px 5px 0 0;
+
+  .customBtn {
+
+    // width: 32px;
+    // height: 32px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    svg {
+      transform: scale(1.15);
+    }
+  }
+}

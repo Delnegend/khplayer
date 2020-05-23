@@ -1,0 +1,42 @@
+{
+  "name": "khplayer",
+  "version": "4.0.0",
+  "description": "A HTML5 playlist player powered by Plyr",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DELNEGEND/khplayer.git"
+  },
+  "author": "Delnegend",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DELNEGEND/khplayer/issues"
+  },
+  "homepage": "https://github.com/DELNEGEND/khplayer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.26.7",
+    "dart-sass": "^1.25.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.9.6",
+    "webpack-stream": "^5.2.1"
+  }
+}
