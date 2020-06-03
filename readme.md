@@ -75,7 +75,7 @@
 
   Tương tự như file .vtt của phần preview thumbnail, cũng liên quan tới [CORS](https://topdev.vn/blog/cors-la-gi/).
 
-<hr>
+<hr width='50%''>
 
 ### C. Build lên thành player
   - Điền form [khplayer.delnegend.xyz](https://khplayer.delnegend.xyz). Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
@@ -105,6 +105,7 @@
 
   - Nếu thêm video vào playlist player đã tạo trước đó, nhấn "Thêm vào playlist đã có", copy đoạn data được generate và chèn vào data trong file JSON, trước 2 element cuối.
 
+<hr width='50%''>
+
 ### D. Lưu ý
- - Đối với định dạng m3u8, KHPlayer chưa hỗ trợ nhiều độ phân giải cùng lúc. Trên trang Generator mình vẫn để được phép chọn nhiều source, sau này (có thể) mình sẽ bổ sung tính năng này.
-### E. Thả🌟và ấn follow để theo dõi khi nào mình release version mới :3
+ - Đối với định dạng m3u8, KHPlayer chưa hỗ trợ nhiều độ phân giải cùng lúc. Trên trang Generator vẫn để được phép chọn nhiều source để sau này (có thể) sẽ bổ sung tính năng.
