@@ -59,10 +59,9 @@
   - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails), quay lại powershell/terminal và `cd` vào thư mục repo đó, copy câu lệnh phần `Generate vtt` trong form, paste vào và Enter.
     Trong trường hợp link repo kia die thì ấn vào [đây](https://github.com/DELNEGEND/khplayer/blob/master/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) để tải xuống.
   - Sau khi được file .vtt, upload lên cloud không bị chặn [CORS](https://topdev.vn/blog/cors-la-gi/), nếu có thì sử dụng một số CORS proxy như [thingproxy - Freeboard](https://github.com/Freeboard/thingproxy), [yacdn.org](https://github.com/ovsoinc/yacdn.org),...<br>
-    **TL;DR:** CORS là cơ chế chặn/cho phép website này sử dụng tài nguyên từ website kia. Như ảnh dưới là chặn này:<br><br>
-    <image src="README_Data/No3rdPartyCloud.png" width="585" height="auto">
-
-    Đối với link OneDrive/Google Drive nhớ rút gọn qua [bit.ly](https://bit.ly/) hoặc bất cứ url shortenter nào khác để mask phần `?export=download...` hay `?download=1` đi, tránh xung đột với param của URL của các proxy.
+  **TL;DR:** CORS là cơ chế chặn/cho phép website này sử dụng tài nguyên từ website kia. Như ảnh dưới là chặn này:<br>
+  <image src="README_Data/No3rdPartyCloud.png" width="585" height="auto">
+  Đối với link OneDrive/Google Drive nhớ rút gọn qua [bit.ly](https://bit.ly/) hoặc bất cứ url shortenter nào khác để mask phần `?export=download...` hay `?download=1` đi, tránh xung đột với param của URL của các proxy.
 
   **Mẹo nhỏ**<br>
   Nếu bạn dùng static site generator như Hugo hay Jekyll, có thể để luôn 2 file mosaic .jpg và .vtt trong thư mục của bài post. Phần `Link direct ảnh` nhập đúng tên ảnh là được, không bắt buộc `./`, đỡ phải upload 2 file mosaic, đỡ tốn thời gian vụ CORS.
