@@ -26,7 +26,7 @@
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5.0/dist/khplayer.min.css">
  ```
 
-<hr class='_1'>
+<hr width='50%''>
 
 ### B. Chuẩn bị nguyên liệu
 - Chắc chắn rằng video sử dụng codec/format phù hợp với HTML5 [sau đây](https://www.encoding.com/html5-video-codec/).
@@ -108,9 +108,3 @@
 ### D. Lưu ý
  - Đối với định dạng m3u8, KHPlayer chưa hỗ trợ nhiều độ phân giải cùng lúc. Trên trang Generator mình vẫn để được phép chọn nhiều source, sau này (có thể) mình sẽ bổ sung tính năng này.
 ### E. Thả🌟và ấn follow để theo dõi khi nào mình release version mới :3
-
-<style>
-  hr._1 {
-    width: 50%;
-  }
-</style>
