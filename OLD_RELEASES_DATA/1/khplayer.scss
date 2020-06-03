@@ -1,0 +1,63 @@
+.plyr {
+    border-radius: 5px 5px 0 0 !important;
+    border-radius: 4px;
+}
+
+#khp_playlist {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 0 0 5px 5px;
+    padding: .2rem;
+    // width: cal(100% - padding);
+    list-style-type: none;
+    max-height: 15rem;
+    overflow: auto;
+    text-align: justify;
+    margin-top: 0px;
+    box-shadow: 0 2px 10px -7px #000;
+    transition: box-shadow 0.1s linear;
+
+    &:hover {
+        box-shadow: 0 2px 10px -5px #000;
+    }
+
+    li {
+        padding: .5rem;
+        margin: .4rem;
+        font-family: Segoe UI, Helvetica, sans-serif;
+        color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        user-select: none;
+        transition: color .2s linear;
+        transition: background-color 0.2s linear;
+
+        &:hover {
+            color: #0ff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        background: #fff;
+        background: #3498db;
+        width: 6px !important;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    }
+}
+
+.plyr:-webkit-full-screen .plyr__captions {
+    font-size: 40px !important;
+}

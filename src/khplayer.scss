@@ -3,7 +3,48 @@ $EmbedKHPPlaylistWidthWhenNormal: 50%;
 $EmbedKHPPlaylistWidthWhenFullScreen: 30%;
 $transition: .4s ease-out;
 $fullScreenCaptionsSize: 30px;
+$lineHeight: 40px;
+$btnHoverRad: 5px;
+$green: #12dd12;
 
+@mixin transition {
+  transition-duration: .3s;
+  transition-timing-function: ease-out;
+}
+
+@mixin hoverShadow {
+  @include transition;
+
+  &:hover {
+    box-shadow: 0 2px 10px -5px black;
+  }
+}
+
+@mixin disableSelect {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+@mixin hoverZoom($x:1.1, $y:0.95) {
+  @include transition;
+
+  &:hover {
+    transform: scale($x);
+  }
+
+  &:active {
+    transform: scale($y);
+  }
+}
+
+.KHPPlaylistContainer,
+div.plyr {
+  font-family: "Noto Sans", Segoe UI, Helvetica, sans-serif;
+}
 
 .KHPPlaylistContainer {
   border-radius: 0 0 5px 5px;
@@ -27,15 +68,11 @@ $fullScreenCaptionsSize: 30px;
   z-index: 3;
   opacity: 1;
   transition: transform $transition;
+
   &.hideEmbedKHPPlaylist {
     transition: transform $transition;
     transform: translateX(-100%);
   }
-}
-
-.KHPPlaylistContainer,
-div.plyr {
-  font-family: "Noto Sans", Segoe UI, Helvetica, sans-serif;
 }
 
 .KHPPlaylistContainer,
@@ -44,6 +81,7 @@ div.plyr {
   padding: .2rem;
   list-style-type: none;
   overflow: auto;
+
   li {
     padding: .5rem;
     margin: .4rem;
@@ -82,18 +120,6 @@ div.plyr {
   }
 }
 
-
-.plyr:-webkit-full-screen {
-  .plyr__captions {
-    font-size: $fullScreenCaptionsSize !important;
-  }
-
-  // .EmbedKHPPlaylist {
-  //   max-width: 100%;
-  //   width: 450px;
-  // }
-}
-
 .plyr {
   --plyr-color-main: #12dd12;
   --plyr-font-size-base: 40px;
@@ -101,15 +127,100 @@ div.plyr {
   --plyr-font-size-smal: 40px;
   border-radius: 5px 5px 0 0;
 
-  .customBtn {
+  &:-webkit-full-screen {
+    .plyr__captions {
+      font-size: $fullScreenCaptionsSize !important;
+    }
+  }
 
-    // width: 32px;
-    // height: 32px;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    svg {
-      transform: scale(1.15);
+  .plyr__controls {
+    .customBtn {
+      svg {
+        transform: scale(1.15);
+      }
+    }
+  }
+
+
+  .systemDetectHistory {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .text {
+      max-width: 80%;
+      width: fit-content;
+      max-height: 100px;
+      background-color: red;
+      color: yellow;
+      border-radius: 8px;
+      padding: .5em;
+      text-align: center;
+    }
+
+    .actions {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: row;
+
+      .confirmBtn {
+        border-radius: $btnHoverRad + 2px;
+        display: inline-block;
+        color: white;
+        background: $green;
+        height: $lineHeight;
+        padding: 3px;
+        cursor: pointer;
+        transition-property: transform;
+        overflow: hidden;
+        margin: 5px;
+        @include hoverZoom(1.1);
+        @include disableSelect;
+        @include transition;
+        text-align: center;
+
+        &:active {
+          transform: scale(1);
+        }
+
+        &:hover {
+          color: #fff;
+        }
+
+        a {
+          color: white;
+        }
+
+        .buttonInner {
+          line-height: $lineHeight - 6px;
+          padding: 0 10px;
+          @include transition;
+          transition-property: margin, color, background-color;
+        }
+      }
+    }
+
+    &.hideAlert {
+      transition: transform $transition;
+      transform: translateY(-100%);
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .plyr {
+    .plyr__controls {
+
+      .nextEpBtn,
+      .prevEpBtn,
+      button[data-plyr="pip"] {
+        display: none;
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
   "description": "A HTML5 playlist player powered by Plyr",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "gulp build"
+    "start": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.6",
+    "sass": "^1.26.7",
     "webpack-stream": "^5.2.1"
   }
 }

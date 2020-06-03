@@ -1,0 +1,307 @@
+[
+  {
+    "title": "Example title 1",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ],
+    "previewThumbnails": {
+      "src": "./sprite.vtt"
+    }
+  },
+  {
+    "title": "Example title 2",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 3",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 4",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 5",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 6",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 7",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 8",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 9",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 10",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 11",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 12",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 13",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 14",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  {
+    "title": "Example title 15",
+    "type": "video",
+    "sources": [
+      {
+        "src": "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8",
+        "size": 1080,
+        "type": "m3u8"
+      }
+    ],
+    "poster": "poster.svg",
+    "tracks": [
+      {
+        "kind": "subtitles",
+        "label": "tiếng Việt",
+        "srclang": "VN",
+        "src": "demo.vtt"
+      }
+    ]
+  },
+  "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg",
+  "m3u8_example"
+]

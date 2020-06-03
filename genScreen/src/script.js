@@ -7,10 +7,10 @@
 const KHPGen = {
   aniSpeed: "fast",
   minus_icon: `<i class='fas fa-minus plmns'></i>`,
-  aniReplaceHTML: (selector, content, duration) => {
+  aniReplaceHTML(selector, content, duration) {
     $(selector).fadeOut(duration, () => $(selector).html(content).fadeIn(duration));
   },
-  aniAppendTo: (takeThis, appendHere, aniSpeed = KHPGen.aniSpeed) => {
+  aniAppendTo(takeThis, appendHere, aniSpeed = KHPGen.aniSpeed) {
     $(takeThis)
       .css({
         "display": "none"
@@ -18,37 +18,37 @@ const KHPGen = {
       .appendTo(appendHere)
       .slideDown(aniSpeed);
   },
-  ADD_EPISODE: elem => {
+  ADD_EPISODE(elem) {
     $(elem)
       .parent(".addRemoveEpBtn")
       .parent(".episode_container")
       .after($("#phantomZoneCtn .episode_container").clone().hide())
       .next().slideDown(KHPGen.aniSpeed);
   },
-  REMOVE_EPISODE: elem => {
+  REMOVE_EPISODE(elem) {
     let a = $(elem).parent(".addRemoveEpBtn").parent(".episode_container");
     a.slideUp(KHPGen.aniSpeed, () => a.remove());
   },
-  ADD_SOURCE: elem => {
+  ADD_SOURCE(elem) {
     KHPGen.aniAppendTo(
       $("#temp_zone #singleSrcCtn").clone(),
       $(elem).parent("#singleSrcCtn").parent("#ALL_SRCS_CTN"),
       KHPGen.aniSpeed);
   },
-  REMOVE_SOURCE: elem => {
+  REMOVE_SOURCE(elem) {
     let a = $(elem).parent('#singleSrcCtn');
     a.slideUp(KHPGen.aniSpeed, () => a.remove());
   },
-  ADD_CAPTIONS: elem => {
+  ADD_CAPTIONS(elem) {
     let a = $("#temp_zone #singleCapCtn").clone(),
       b = $(elem).parent("#singleCapCtn").parent("#ALL_CAPS_CTN");
     KHPGen.aniAppendTo(a, b, KHPGen.aniSpeed);
   },
-  REMOVE_CAPTIONS: elem => {
+  REMOVE_CAPTIONS(elem) {
     let a = $(elem).parent('#singleCapCtn');
     a.slideUp(KHPGen.aniSpeed, () => a.remove());
   },
-  SELECT_TYPE: elem => {
+  SELECT_TYPE(elem) {
     let a = $(elem)
       .parent(".dropdown-menu")
       .parent("#typeSelectorContainer")
@@ -57,7 +57,7 @@ const KHPGen = {
     KHPGen.aniReplaceHTML(a, b, KHPGen.aniSpeed);
     a.attr("selected-type", $(elem).attr("type-data"));
   },
-  SELECT_RES: elem => {
+  SELECT_RES(elem) {
     let a =
       $(elem)
       .parent(".dropdown-menu")
@@ -67,7 +67,7 @@ const KHPGen = {
     KHPGen.aniReplaceHTML(a, b, KHPGen.aniSpeed);
     a.attr("selected-res", $(elem).attr("res-data"));
   },
-  saveAsJSON: string => {
+  saveAsJSON(string) {
     let text = string,
       filename = UNIQUE_ID,
       blob = new Blob([text], {
@@ -75,28 +75,22 @@ const KHPGen = {
       });
     saveAs(blob, filename);
   },
-  downloadData: () => {
+  downloadData() {
     saveAsJSON(generateCodeFromUserInput());
   },
-  completeResult: elem => {
+  completeResult(elem) {
     $('#masterPosterContainer, .episode_container').slideUp(KHPGen.aniSpeed);
     $('#addOrCreateNewCtn').slideDown(KHPGen.aniSpeed);
-    // $('#downloadCodeFromUserInputButton').html(`${UNIQUE_ID}.js`);
-    // $('#codeToCopyIntoUserHTML').html(input);
-    // $(".completeResult").hide(KHPGen.aniSpeed);
-    // $(".editResult").show(KHPGen.aniSpeed);
     $(elem).html("Quay lại chỉnh sửa");
     $(elem).attr('onclick', "KHPGen.editResult(this)");
   },
-  editResult: elem => {
+  editResult(elem) {
     $('#addOrCreateNewCtn, #createNewPPCtn, #existedPPCtn').slideUp(KHPGen.aniSpeed);
     $('#masterPosterContainer, .episode_container').slideDown(KHPGen.aniSpeed);
-    // $(".editResult").hide(KHPGen.aniSpeed);
-    // $(".completeResult").show(KHPGen.aniSpeed);
     $(elem).html("Hoàn thành");
     $(elem).attr('onclick', "KHPGen.completeResult(this)");
   },
-  generateCodeFromUserInput: () => {
+  generateCodeFromUserInput() {
     // Ẩn khung export
     $("#outputPanel").slideUp(KHPGen.aniSpeed);
 
@@ -106,7 +100,7 @@ const KHPGen = {
     // Lấy url của poster tổng, để ngoài này thay vì trong vòng lặp dưới để tránh việc #masterPosterInput bị fetch nhiều lần, ảnh hưởng tới hiệu năng
     let inputMasPoster = $("#masterPosterInput").val(),
       finalMasPoster;
-    if (inputMasPoster != "") {
+    if (inputMasPoster) {
       finalMasPoster = inputMasPoster;
     } else {
       finalMasPoster = "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg";
@@ -114,7 +108,7 @@ const KHPGen = {
 
     // Xử lý từng episode
     $("#userInteractCtn .episode_container").each((index, value) => {
-      if ($(value).find(".title").val() != "") {
+      if ($(value).find(".title").val()) {
         let
           // Object tạm thời để đẩy dần dữ liệu vào, cuối cùng đẩy vào RAW_DATA
           processingEpElem = {},
@@ -127,6 +121,10 @@ const KHPGen = {
         processingEpElem.title = $(value).find(".title").val();
         processingEpElem.sources = [];
 
+        let preThumbSrc = $(value).find(".previewThumbnail").val();
+        if (preThumbSrc) processingEpElem.previewThumbnails = {
+          src: preThumbSrc
+        };
         // Xử lý từng source
         $(value).find("#ALL_SRCS_CTN").find("#singleSrcCtn").each((index, value) => {
           let currentMediaSrc = {};
@@ -136,7 +134,7 @@ const KHPGen = {
           currentMediaSrc.src = $(value).find(".mediaSrc").val();
 
           // Type
-          if (inputSrcType != "undefined") {
+          if (inputSrcType != 'undefined') {
             currentMediaSrc.type = inputSrcType;
           } else {
             currentMediaSrc.type = "video/mp4";
@@ -154,7 +152,7 @@ const KHPGen = {
           processingEpElem.sources.push(currentMediaSrc);
         });
         // Xử lý từng phụ đề
-        if (checkSubsExist != "") {
+        if (checkSubsExist) {
           processingEpElem.tracks = [];
           $(value).find("#ALL_CAPS_CTN").find("#singleCapCtn").each((index, value) => {
             let processingCaption = {};
@@ -167,7 +165,7 @@ const KHPGen = {
         }
         // Phần poster
         let finalEpPoster;
-        if (inputEpPoster != "") {
+        if (inputEpPoster) {
           finalEpPoster = inputEpPoster;
         } else {
           finalEpPoster = finalMasPoster;
@@ -185,13 +183,13 @@ const KHPGen = {
     return JSON.stringify(RAW_DATA);
   },
   copy2clip: new ClipboardJS(".copy2clip"),
-  messageBox: (message = "Thông báo!", duration = 1000) => {
+  messageBox(message = "Thông báo!", duration = 1000) {
     // Type: https://getbootstrap.com/docs/4.0/components/alerts/
 
     // Tạo 1 id tạm thời cho container thông báo, mỗi 1 noti là 1 id riêng, tránh trùng lặp với noti trước nếu 2 cái overlap nhau
     let tempID = `_${new Date().getTime()}`;
     // Tạo container chứa messageBox nếu chưa có
-    if ($('.alertCtn')[0] == void 0) {
+    if ($('.alertCtn')[0] === void 0) {
       $("body").append(`<div class="alertCtn"><div class="innerAlertCtn"></div></div>`);
     }
     $('.innerAlertCtn').append(`<div class="alert" id="${tempID}" role="alert" style="display:none">${message}</div>`);

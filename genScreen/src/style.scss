@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,700&display=swap');
 
 * {
   font-family: Noto Sans;
@@ -66,8 +67,7 @@ button {
 
 .episode_container .btn,
 #createNewPPActionBtn,
-#existedPPActionBtn,
-  {
+#existedPPActionBtn {
   background-color: rgba($color: black, $alpha: .1) !important;
 }
 
@@ -159,13 +159,15 @@ header {
     display: flex;
     width: 100%;
 
-    .title {
-      margin: 1em 1em 1em 0;
+    .title,
+    .previewThumbnail {
+      margin: 1em 0;
     }
 
     .poster {
-      margin: 1em 0;
+      margin: 1em;
     }
+
   }
 
   .episode_container {
@@ -267,6 +269,7 @@ header {
 
   #existedPPCtn,
   #createNewPPCtn {
+    max-width: 80%;
     width: fit-content;
     margin: 2em auto 0 auto;
     @extend %outer_frame;
