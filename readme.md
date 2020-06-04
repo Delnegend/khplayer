@@ -72,7 +72,7 @@
 
   Trong trường hợp quuz.org không còn truy cập được: [khplayer.delnegend.xyz/VTT_validation/](https://khplayer.delnegend.xyz/VTT_Validation/)
 
-  Tương tự như file .vtt của phần preview thumbnail, cũng liên quan tới [CORS](https://topdev.vn/blog/cors-la-gi/).
+  Tương tự như file .vtt của phần preview thumbnail, khi upload lên cloud cũng cần lưu ý tới [CORS](https://topdev.vn/blog/cors-la-gi/).
 
 <hr width='50%''>
 
