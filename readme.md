@@ -1,11 +1,20 @@
 <img src="./dist/default_wating.svg" width="100%" height="auto">
 
+## **Mục đích chính**
+Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/demo/) mà không động đến CSS, JS
+
+<img src='./README_Data/Annotation 2020-06-05 003744.png'>
+
 ## **Các tính năng**
-- **Playlist.**
-- Mỗi video chọn được nhiều phụ đề/độ phân giải. (x)
-- Gán poster cho từng tập cũng như poster mặc định.
-- Tự động next tập, dừng lại khi đến tập cuối cùng. 
-- Generate nhiều playlist trên cùng 1 trang mà không bị xung đột lẫn nhau
+- **Playlist.** *(KHPlayer)*
+- Mỗi video chọn được nhiều phụ đề/độ phân giải. *(Plyr)*
+- Gán poster cho từng tập cũng như poster mặc định. *(Plyr)*
+- Tự động next tập, dừng lại khi đến tập cuối cùng. *(KHPlayer)*
+- Generate nhiều playlist trên cùng 1 trang mà không bị xung đột lẫn nhau *(KHPlayer)*
+- Thư viện m3u8 *(HLS)* + phụ đề *(KHPlayer)*
+- Tự động phát tập tiếp theo khi hết tập *(KHPlayer)*
+- Lưu lại lịch sử tập đang xem cũng như xem đến đâu *(KHPlayer)*
+- Và nhiều tính năng khác dự kiến phát triên thêm trong tương lai...
 
 <hr>
 
@@ -108,3 +117,12 @@
 
 ### D. Lưu ý
  - Đối với định dạng m3u8, KHPlayer chưa hỗ trợ nhiều độ phân giải cùng lúc. Trên trang Generator vẫn để được phép chọn nhiều source để sau này (có thể) sẽ bổ sung tính năng.
+
+<hr>
+
+# Credit
+- [Plyr](https://plyr.io) - APIs, player, themes,...
+- [hls.js](https://github.com/video-dev/hls.js/) - M3U8 library.
+- [FontAwesome](https://fontawesome.com/) - next/prev, toggle menu button.
+- [radiantmediaplayer](https://github.com/radiantmediaplayer) - tutorial to how to create sprite thumbnail.
+- [StackOverflow](https://stackoverflow.com/), [MDN web docs](https://developer.mozilla.org/), specially [Google](https://google.com) for JavaScript knowledge.
