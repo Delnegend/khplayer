@@ -32,7 +32,7 @@ Generate được một playlist player [như thế này](https://khplayer.delne
  Cuối cùng thêm 2 file css này
  ```html
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5.0/dist/khplayer.min.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5/dist/khplayer.min.css">
  ```
 
 <hr width='50%''>
@@ -92,7 +92,7 @@ Generate được một playlist player [như thế này](https://khplayer.delne
     - Nhấn "Copy container", paste vào vị trí muốn đặt playlist player trên webpage (nếu muốn dùng id khác thì phải edit lại phần tử cuối cùng của file JSON vừa tải trên).
     - Tiếp đến thêm `<script>` này vào webpage, chỗ nào cũng được:
       ```html
-      <script defer src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5.0/dist/khplayer.min.js" jsonPath='<array (các) đường dẫn đến file JSON>'></script>
+      <script defer src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5/dist/khplayer.min.js" jsonPath='<array (các) đường dẫn đến file JSON>'></script>
       ```
     - Phần "array các đường dẫn đến fle JSON" đúng ý nghĩa mình chú thích. Paste đường dẫn tới file JSON lưu ở bước 1. Đây cũng là lý do vì sao mình bảo nên để ở cùng thư mục so với file index của webpage, vì khi này chỉ cần nhập:
 
