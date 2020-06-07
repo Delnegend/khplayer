@@ -127,4 +127,3 @@ Generate được một playlist player [như thế này](https://khplayer.delne
 - [hls.js](https://github.com/video-dev/hls.js/) - M3U8 library.
 - [FontAwesome](https://fontawesome.com/) - next/prev, toggle menu button.
 - [radiantmediaplayer](https://github.com/radiantmediaplayer) - tutorial to how to create sprite thumbnail.
-- [StackOverflow](https://stackoverflow.com/), [MDN web docs](https://developer.mozilla.org/), specially [Google](https://google.com) for JavaScript knowledge.
