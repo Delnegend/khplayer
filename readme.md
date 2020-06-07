@@ -86,7 +86,9 @@ Generate được một playlist player [như thế này](https://khplayer.delne
 <hr width='50%''>
 
 ### C. Build lên thành player
-  - Điền form [khplayer.delnegend.xyz](https://khplayer.delnegend.xyz). Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
+  - Điền form [khplayer.delnegend.xyz](https://khplayer.delnegend.xyz).<br>
+  Lưu ý: khi nhập các ô `Nguồn...` mà ở dạng relative `./` hay `../`, là relative đối với file index.html<br>
+  Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
   - #### Nếu trên webpage chưa có cái đoạn `<script>` như bước thứ 3, nhấn "Tạo mới":
     - Nhấn "Download JSON" và lưu file vào nơi nào đó, nên lưu cùng thư mục so với file index của webpage chứa playlist player để tiện edit.
     - Nhấn "Copy container", paste vào vị trí muốn đặt playlist player trên webpage (nếu muốn dùng id khác thì phải edit lại phần tử cuối cùng của file JSON vừa tải trên).

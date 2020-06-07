@@ -4,7 +4,8 @@
   "description": "A HTML5 playlist player powered by Plyr",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "gulp watch"
+    "watch": "gulp watch",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,9 @@
   },
   "homepage": "https://github.com/DELNEGEND/khplayer#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-transform-runtime": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.26.7",
@@ -36,8 +37,8 @@
     "gulp-sourcemaps": "^2.6.5"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.6",
-    "sass": "^1.26.7",
+    "@babel/runtime": "^7.10.2",
+    "sass": "^1.26.8",
     "webpack-stream": "^5.2.1"
   }
 }
