@@ -260,8 +260,11 @@ const KHPlayer = {
         watchVar.newValue = d.querySelector(UKS + " .plyr video").readyState;
       }, 100);
     }
-    // Lưu thời gian video đang xem mỗi 5 giây vào localStorage
-    setInterval(() => {
+    // Lưu thời gian video đang xem mỗi 1 giây vào localStorage
+    // Đầu tiên tạo interval rỗng -> clear đi -> tạo lại cái mới, tránh dẫn đến việc nhiều cái setInterval khác nhau
+    let saveCurrTimeEp = setInterval(function () {}, 1000);
+    clearInterval(saveCurrTimeEp);
+    saveCurrTimeEp = setInterval(() => {
       let watchVideoState = {
         state: void 0,
         get newValue() {
