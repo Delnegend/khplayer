@@ -122,14 +122,14 @@ div.plyr {
 
 .plyr {
   --plyr-color-main: #12dd12;
-  --plyr-font-size-base: 40px;
+  // --plyr-font-size-base: 40px;
   --plyr-font-smoothing: true;
-  --plyr-font-size-smal: 40px;
+  // --plyr-font-size-smal: 40px;
   border-radius: 5px 5px 0 0;
 
   &:-webkit-full-screen {
     .plyr__captions {
-      font-size: $fullScreenCaptionsSize !important;
+      // font-size: $fullScreenCaptionsSize !important;
     }
   }
 
