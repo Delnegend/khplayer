@@ -1,6 +1,4 @@
 $mainColor: #12dd12;
-$EmbedKHPPlaylistWidthWhenNormal: 50%;
-$EmbedKHPPlaylistWidthWhenFullScreen: 30%;
 $transition: .4s ease-out;
 $fullScreenCaptionsSize: 30px;
 $lineHeight: 40px;
@@ -67,11 +65,10 @@ div.plyr {
   max-width: 100%;
   width: 400px;
   z-index: 3;
-  // opacity: 1;
   overflow: hidden;
   transition: transform $transition;
+  backdrop-filter: blur(5px);
   &.hidden {
-    // opacity: 0;
     transition: transform $transition;
     transform: translateX(-100%);
   }
@@ -88,11 +85,12 @@ div.plyr {
 
     }
     .closeEmbed {
+      $size: 40px;
       position: absolute;
       right: 24px;
-      top: 12px;
-      width: 40px;
-      height: 40px;
+      top: 10px;
+      width: $size;
+      height: $size;
       z-index: 4;
       color: $mainColor;
       cursor: pointer;

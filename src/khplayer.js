@@ -155,20 +155,29 @@ const KHPlayer = {
     );
     //#endregion
 
-    //#region Thêm KHPPlaylistContainer
+    //#region Thêm Playlist vào player
     /* Source:
       https://stackoverflow.com/a/18602389
       https://www.w3schools.com/jsref/met_node_clonenode.asp
+    Cấu trúc Playlist mới trong Player để overlay nút đóng playlist lên trên playlist:
+
+    <div class="embed-playlist"> -> position: absolute
+      <div> -> position: relative
+        <ul></ul> -> position: relative
+        <div>Nút đóng playlist</div> -> position: absolute
+      </div>
+    </div>  
     */
     KHPlayer._insertBefore(
       UKS + ' .plyr>.plyr__control',
-      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}'><div></div></div>`)
+      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}' style='visibility: hidden'><div></div></div>`)
     );
     d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(d.querySelector(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true));
-    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(KHPlayer.htmlToElement(`<div class="closeEmbed"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg></div>`));
-    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div>.KHPPlaylistContainer`).removeAttribute("class");
 
-    // d.querySelector(UKS + " .plyr>.KHPPlaylistContainer").setAttribute("class", "EmbedKHPPlaylist hidden");
+    // Nút ẩn Playlist
+    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(KHPlayer.htmlToElement(`<div class="closeEmbed">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="window-close" class="svg-inline--fa fa-window-close fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-83.6 290.5c4.8 4.8 4.8 12.6 0 17.4l-40.5 40.5c-4.8 4.8-12.6 4.8-17.4 0L256 313.3l-66.5 67.1c-4.8 4.8-12.6 4.8-17.4 0l-40.5-40.5c-4.8-4.8-4.8-12.6 0-17.4l67.1-66.5-67.1-66.5c-4.8-4.8-4.8-12.6 0-17.4l40.5-40.5c4.8-4.8 12.6-4.8 17.4 0l66.5 67.1 66.5-67.1c4.8-4.8 12.6-4.8 17.4 0l40.5 40.5c4.8 4.8 4.8 12.6 0 17.4L313.3 256l67.1 66.5z"></path></svg></div>`));
+    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div>.KHPPlaylistContainer`).removeAttribute("class");
     //#endregion
 
     //#region Gán trạng thái player vào localStorage (đang fullscreen hay bình thường) để khi chuyển sang tập khác sẽ auto fullscreen lại hay không
@@ -180,13 +189,13 @@ const KHPlayer = {
       localStorage.removeItem("IsFullScreen_" + uniqueKey);
     });
     d.querySelector(UKS + " .plyr__video-wrapper").addEventListener("click", () => {
-      this.toggleEmbedPlayllist(uniqueKey, "hide");
+      this.toggleEmbedPlayllist(uniqueKey, true);
     });
     d.querySelector(UKS + " .closeEmbed").addEventListener("click", () => {
-      this.toggleEmbedPlayllist(uniqueKey, "hide");
+      this.toggleEmbedPlayllist(uniqueKey, true);
     });
   },
-  toggleEmbedPlayllist(uniqueKey, singleAction) {
+  toggleEmbedPlayllist(uniqueKey, hideOnly) {
     let d = document,
       elem = d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']`),
       showPL = function () {
@@ -199,12 +208,8 @@ const KHPlayer = {
           elem.style.visibility = "hidden";
         }, { once: true });
       };
-    if (singleAction) {
-      switch (singleAction) {
-        case "show": showPL(); break;
-        case "hide": hidePL(); break;
-        default: hidePL();
-      }
+    if (hideOnly) {
+      hidePL();
     } else {
       if (elem.classList.contains("hidden")) {
         showPL();
