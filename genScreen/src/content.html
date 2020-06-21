@@ -28,23 +28,23 @@
   <div id="userInteractCtn">
     <!-- Input default poster -->
     <div id="masterPosterContainer" class="shadowHover">
-      <input class="form-control" type="text" placeholder="Nguồn poster chính (không bắt buộc)" id="masterPosterInput">
+      <input class="form-control" type="text" placeholder="DL (direct link) ảnh bìa chính (nếu muốn)" id="masterPosterInput">
     </div>
   </div>
 
   <!-- 4. Kết quả -->
   <div id="displayFinalResultCtn">
     <div id="createNewPPCtn" style="display: none">
-      <button type="button" class="btn" id="downloadJSON">Download JSON</button>
+      <button type="button" class="btn" id="downloadJSON">Tải file JSON</button>
       <div class="createNewPPLowerCtn">
         <pre id="createNewPPCode"><code class="language-html"></code></pre>
-        <button type="button" class="btn copy2clip" data-clipboard-target="#createNewPPCode>code">Copy</button>
+        <button type="button" class="btn copy2clip" data-clipboard-target="#createNewPPCode>code">Sao chép</button>
       </div>
     </div>
 
     <div id="existedPPCtn" style="display: none;">
       <pre id="existedPPCtnCode"><code class="language-jsonp"></code></pre>
-      <button type="button" class="btn copy2clip" data-clipboard-target="#existedPPCtnCode>code">Copy</button>
+      <button type="button" class="btn copy2clip" data-clipboard-target="#existedPPCtnCode>code">Sao chép</button>
     </div>
   </div>
 
@@ -69,8 +69,8 @@
       <!-- Input_tiêu_đề_và_poster -->
       <div class="essentials">
         <input class="form-control title" type="text" placeholder="Tiêu đề">
-        <input class="form-control poster" type="text" placeholder="Nguồn poster (không bắt buộc)">
-        <input class="form-control previewThumbnail" type="text" placeholder="Nguồn preview thumbnails">
+        <input class="form-control poster" type="text" placeholder="DL ảnh bìa (nếu muốn)">
+        <input class="form-control previewThumbnail" type="text" placeholder="DL preview thumbnail">
       </div>
 
       <!-- Container_nguồn -->
@@ -78,7 +78,7 @@
       <div id="ALL_SRCS_CTN">
         <!-- Các_thẻ_nguồn -->
         <div class="input-group" id="singleSrcCtn">
-          <input type="text" class="form-control mediaSrc" aria-label="Text input with dropdown button" placeholder="Nguồn video">
+          <input type="text" class="form-control mediaSrc" aria-label="Text input with dropdown button" placeholder="DL file video">
           <!-- Chọn_chất_lượng -->
           <div class="input-group-append" id="qualitySelectorContainer">
             <!-- Chất lượng đã chọn -->
@@ -136,9 +136,9 @@
       <div id='ALL_CAPS_CTN'>
         <!-- Các_thẻ_sub -->
         <div id="singleCapCtn">
-          <input class="form-control captionFullName" type="text" placeholder="Tên phụ đề (ví dụ tiếng Việt)">
-          <input class="form-control captionShortName" type="text" placeholder="Viết tắt (ví dụ VN)">
-          <input class="form-control capionSrc" type="text" placeholder="Nguồn phụ đề">
+          <input class="form-control captionFullName" type="text" placeholder="Ngôn ngữ (tiếng Việt) (nếu muốn)">
+          <input class="form-control captionShortName" type="text" placeholder="Viết tắt (VN)">
+          <input class="form-control capionSrc" type="text" placeholder="DL file phụ đề">
           <!-- Nút_thêm_sub -->
           <button type="button" class="btn" style="margin: 0 0 1em 1em" id='addCaptionBtn' onclick="KHPGen.ADD_CAPTIONS(this)">
             <i class="fas fa-plus plmns"></i>
