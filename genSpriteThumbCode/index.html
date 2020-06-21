@@ -22,7 +22,7 @@
     <div class="flexRow">
       <input-field _id="filename" title="Tên file" style="margin-left: 0;" type="text" placeholder="example.mp4"></input-field>
       <input-field _id="fps" title="Khung hình/giây" type="number" placeholder="24"></input-field>
-      <input-field _id="thumbUrl" title="Link direct ảnh" type="text" placeholder="./example_mosaic.jpg"></input-field>
+      <input-field _id="thumbUrl" title="Link ảnh trực tiếp" type="text" placeholder="mosaic.jpg"></input-field>
     </div>
 
     <div class="flexRow">
@@ -38,19 +38,19 @@
       <input-field _id="height" title="Dọc" type="number" placeholder="180"></input-field>
     </div>
     <div class="flexRow">
-      <input-field _id="interval" title="Cứ mỗi X giây tạo 1 bức thumb" style="margin-left: 0;" type="number" placeholder="5"></input-field>
+      <input-field _id="interval" title="Tạo 1 bức mỗi (giây)" style="margin-left: 0;" type="number" placeholder="5"></input-field>
     </div>
   </div>
 
 
   <div class="outputCtn flexCol">
     <div class="flexRow">
-      <span>Generate jpg</span>
+      <span>Tạo file jpg</span>
       <div class="output" id="ffmpegCmd"></div>
       <copy-button data-target="#ffmpegCmd"></copy-button>
     </div>
     <div class="flexRow">
-      <span>Generate vtt</span>
+      <span>Tạo file vtt</span>
       <div class="output" id="nodeCmd"></div>
       <copy-button data-target="#nodeCmd"></copy-button>
     </div>
