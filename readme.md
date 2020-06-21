@@ -1,28 +1,27 @@
 <img src="./dist/default_wating.svg" width="100%" height="auto">
 
-## **Mục đích chính**
+## **Tính năng chính**
 Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/demo/) mà không động đến CSS, JS
 
-<img src='./README_Data/Annotation 2020-06-05 003744.png'>
+<img src='./README_Data/khplayer-demo.png'>
 
-## **Các tính năng**
+## **Các tính năng khác**
 - **Playlist.** *(KHPlayer)*
 - Mỗi video chọn được nhiều phụ đề/độ phân giải. *(Plyr)*
 - Gán poster cho từng tập cũng như poster mặc định. *(Plyr)*
 - Tự động next tập, dừng lại khi đến tập cuối cùng. *(KHPlayer)*
 - Generate nhiều playlist trên cùng 1 trang mà không bị xung đột lẫn nhau *(KHPlayer)*
-- Thư viện m3u8 *(HLS)* + phụ đề *(KHPlayer)*
-- Tự động phát tập tiếp theo khi hết tập *(KHPlayer)*
-- Lưu lại lịch sử tập đang xem cũng như xem đến đâu *(KHPlayer)*
-- Và nhiều tính năng khác dự kiến phát triên thêm trong tương lai...
+- Hỗ trợ playback .m3u8 *(HLS)* + phụ đề *(KHPlayer)*
+- Lưu lại tập/thời lượng đang xem tới *(KHPlayer)*
+- Và nhiều tính năng khác (có thể) có thêm trong tương lai...
 
 <hr>
 
 ## **Hướng dẫn sử dụng**
-### A. Thêm các file JS/CSS cần thiết
- Thêm 2 script này vào phần thẻ ```<head></head>``` nếu cái nào chưa có.
+### A. Thêm vào ```<head></head>``` nếu chưa có.
 
-  ```html
+Framework Plyr
+```html
 <script src="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js"></script> 
 ```
  Thêm hls.js nữa nếu có ý định dùng file m3u8
@@ -32,94 +31,176 @@ Generate được một playlist player [như thế này](https://khplayer.delne
  Cuối cùng thêm 2 file css này
  ```html
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5/dist/khplayer.min.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5.3/dist/khplayer.min.css">
  ```
 
-<hr width='50%''>
+<hr width='50%'>
 
 ### B. Chuẩn bị nguyên liệu
-- Chắc chắn rằng video sử dụng codec/format phù hợp với HTML5 [sau đây](https://www.encoding.com/html5-video-codec/).
+- <details>
+  <summary>Video | Ảnh bìa nếu muốn</summary>
 
-  TL;DR: miễn codec H264/AAC, format .mp4 auto tương thích mọi trình duyệt phổ biến.
+  - File video sử dụng 1 trong những codec/format [này](https://www.encoding.com/html5-video-codec/).<br>
+    Ngắn gọn: video AVC (H264) + audio AAC + format .mp4 tương thích nhất.
 
-  Mình recommend dùng [Handbrake](https://handbrake.fr/) để convert. Sử dụng sẵn presets mong muốn trong phần General, sau đó sang tab Summary tích vào Web Optimized, sang tab Audio phần bitrate chỉnh 256 hoặc 320 tuỳ thích (nên để 320) rồi ấn Start Encode.
+  - Recommend dùng [Handbrake](https://handbrake.fr/) để convert. Sử dụng sẵn presets trong General > sang tab Summary tích Web Optimized > sang tab Audio bitrate = 256 hoặc 320 > Start Encode.
 
-  Upload video lên bất cứ cloud storage nào cho phép dùng link direct. Nếu chưa biết, link direct (video) là link khi paste vào trình duyệt hoặc IDM sẽ tự động tải xuống, hoặc paste vào MXPlayer, VLC, Media Player Classic,... sẽ tự động phát.<br>
-  Ví dụ: `https://bit.ly/3cdHH3q`
+  - Hoặc nếu đã chuẩn codec AVC + AAC thì dùng ffmpeg để chuyển đổi format với câu lệnh
+  ```
+  ffmpeg -i input.mkv -codec copy output.mp4
+  ```
 
-  Với Google Drive, có thể dùng [direct.gdrive.vip](https://direct.gdrive.vip/) để tạo link direct. Lưu ý vài trường hợp không tạo được đối với GDrive Unlimited (chính mình bị đây).
+  - Thumbnail có thể lên Google kiếm, còn nếu muốn lấy từ file video
+  ```
+  ffmpeg -ss 01:23:45 -i input.mp4 -vframes 1 -q:v 2 output.jpg
+  ```
 
-  Với OneDrive 5TB, khi tạo link chia sẻ, cuối link có đoạn `?e=xxxxx` thì xoá đi và thay bằng `?download=1` thì sẽ thành link direct (loại 1TB mình chưa test)
+  - Upload video và ảnh bìa lên cloud storage có direct link ([đọc phần này](#tips)).<br><br>
+    <img src="README_Data/what-is-direct-link.png">
 
-  **Mẹo nhỏ:**
-  - Dùng AirExplorer (Mac/Win) khi tạo link chia sẻ OneDrive sẽ vừa nhanh/tiện hơn, vừa không có đoạn `?e=xxxxx`.
-  - Nếu file lưu Google Drive (15GB hay Unlimited) [nhỏ hơn 100MB](https://support.google.com/a/answer/172541?hl=en) có thể dùng link dạng này: `https://drive.google.com/uc?export=download&id=xxxxxxxxxxxxxxxx`.
+  </details>
 
-- Preview thumbnail, dịch sơ qua là ảnh xem trước (nếu muốn):
+- <details>
+    <summary>Preview thumbnail (nếu muốn)</summary>
 
-  <img src='./README_Data/spriteThumb.png' width='316' height='auto'>
+  Dịch sơ qua là ảnh xem trước như thế này
 
-  Bao gồm các file ảnh (hoặc ghép hết vào thành 1 - gọi là sprite thumbnail) và 1 file .vtt (hoạt động tương tự như file phụ đề). Ở đây mình sẽ hướng dẫn tạo sprite thumbnail (1 file chứa toàn bộ ảnh) và 1 file .vtt:
+  <img src='./README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
+
+  Bao gồm nhiều file ảnh preview hoặc ghép hết thành 1 (sprite thumbnail) và 1 file .vtt cho biết ảnh preview nào ở đoạn nào. Ở đây mình hướng dẫn tạo cho trường hợp sprite thumbnail:
 
   - Cài [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Điền form này](https://khplayer.delnegend.xyz/genSpriteThumbCode/), copy câu lệnh phần `Generate jpg` (ô `Link direct ảnh` không cần điền).
-  - Mở powershell/terminal lên, `cd` đến thư mục chứa file video và paste câu lệnh vừa copy vào.
-  - Sau khi được file .jpg, upload lên cloud (không dùng OneDrive), lấy link direct rồi paste vào `Link direct ảnh` trong form vừa rồi.
-  - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails), quay lại powershell/terminal và `cd` vào thư mục repo đó, copy câu lệnh phần `Generate vtt` trong form, paste vào và Enter.
-    Trong trường hợp link repo kia die thì ấn vào [đây](https://github.com/DELNEGEND/khplayer/blob/master/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) để tải xuống.
-  - Sau khi được file .vtt, upload lên cloud không bị chặn [CORS](https://topdev.vn/blog/cors-la-gi/), nếu có thì sử dụng một số CORS proxy như [thingproxy - Freeboard](https://github.com/Freeboard/thingproxy), [yacdn.org](https://github.com/ovsoinc/yacdn.org),...<br>
-  **TL;DR:** CORS là cơ chế chặn/cho phép website này sử dụng tài nguyên từ website kia. Như ảnh dưới là chặn này:<br>
-    <image src="README_Data/No3rdPartyCloud.png" width="585" height="auto"><br>
-    Đối với link OneDrive/Google Drive nhớ rút gọn qua [bit.ly](https://bit.ly/) hoặc bất cứ url shortenter nào khác để mask phần `?export=download...` hay `?download=1` đi, tránh xung đột với param của URL của các proxy.
+  - [Điền form này](https://khplayer.delnegend.xyz/genSpriteThumbCode/), chưa cần điền `Link ảnh trực tiếp`.
+  - Mở powershell/terminal > `cd "D:\thư\mục\chứa\file\video.mp4"` > dán câu lệnh `Tạo file jpg` > Enter.
+  - Upload file .jpg lên cloud, lấy link trực tiếp rồi dán vào `Link ảnh trực tiếp` trong form trên. ([đọc phần này](#tips))
+  - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
+  - Quay lại powershell/terminal > `cd "D:\thư\mục\vừa\trên\"` > dán câu lệnh `Tạo file vtt` trong form và Enter.
+  - Upload file .vtt lên cloud có direct link ([đọc phần này](#tips)) không bị chặn [CORS](https://topdev.vn/blog/cors-la-gi/), nếu có thì sử dụng một số CORS proxy như [thingproxy](https://github.com/Freeboard/thingproxy), [yacdn.org](https://github.com/ovsoinc/yacdn.org),...<br>
+  Ngắn gọn: CORS là cơ chế chặn/cho phép website khác sử dụng tài nguyên từ website mình. Như này là bị chặn:<br><br>
+    <img src="README_Data/cors-blocked-demo.png" style="max-width: 585px; width: 100%; height: auto"><br><br>
+    Đối với link OneDrive/Google Drive hãy rút gọn qua [bit.ly](https://bit.ly/) (hoặc bất cứ url shortenter nào) để "ẩn" phần `?export=download`, `?download=1`,... tránh xung đột với param của các proxy.
 
-  **Mẹo nhỏ**<br>
-  Nếu bạn dùng static site generator như Hugo hay Jekyll, có thể để luôn 2 file mosaic .jpg và .vtt trong thư mục của bài post. Phần `Link direct ảnh` nhập đúng tên ảnh là được, không bắt buộc `./`, đỡ phải upload 2 file mosaic, đỡ tốn thời gian vụ CORS.
+  </details>
 
-- File phụ đề dạng .vtt (nếu có/muốn)
-
-  Convert từ .srt hay .ass sang .vtt trên Google không thiếu. Tuy nhiên nếu muốn chắc chắn 100% file vtt được convert đúng cách hãy sử dụng trang [quuz.org/webvtt/](https://quuz.org/webvtt/).
-
-  Trong trường hợp quuz.org không còn truy cập được: [khplayer.delnegend.xyz/VTT_validation/](https://khplayer.delnegend.xyz/VTT_Validation/)
-
-  Tương tự như file .vtt của phần preview thumbnail, khi upload lên cloud cũng cần lưu ý tới [CORS](https://topdev.vn/blog/cors-la-gi/).
-
-<hr width='50%''>
+- <details>
+    <summary>File phụ đề .vtt (nếu muốn)</summary>
+  
+  - Convert .ass hay .srt sang .vtt: [Google](https://google.com)
+  - Kiểm tra .vtt "chuẩn" [quuz.org/webvtt/](https://quuz.org/webvtt/) | [dự phòng]([khplayer.delnegend.xyz/VTT_validation/](https://khplayer.delnegend.xyz/VTT_Validation/))
+  - Upload lên cloud có direct link ([đọc phần này](#tips)).<br>
+    Tương tự như file .vtt preview thumbnail, cần lưu ý tới [CORS](https://topdev.vn/blog/cors-la-gi/).
+  
+  </details>
+<hr width='50%'>
 
 ### C. Build lên thành player
-  - Điền form [khplayer.delnegend.xyz](https://khplayer.delnegend.xyz).<br>
-  Lưu ý: khi nhập các ô `Nguồn...` mà ở dạng relative `./` hay `../`, là relative đối với file index.html<br>
+  - Điền form [này](https://khplayer.delnegend.xyz).<br> (DL viết tắt cho direc link - link trực tiếp)
   Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
-  - #### Nếu trên webpage chưa có cái đoạn `<script>` như bước thứ 3, nhấn "Tạo mới":
-    - Nhấn "Download JSON" và lưu file vào nơi nào đó, nên lưu cùng thư mục so với file index của webpage chứa playlist player để tiện edit.
-    - Nhấn "Copy container", paste vào vị trí muốn đặt playlist player trên webpage (nếu muốn dùng id khác thì phải edit lại phần tử cuối cùng của file JSON vừa tải trên).
-    - Tiếp đến thêm `<script>` này vào webpage, chỗ nào cũng được:
-      ```html
-      <script defer src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5/dist/khplayer.min.js" jsonPath='<array (các) đường dẫn đến file JSON>'></script>
-      ```
-    - Phần "array các đường dẫn đến fle JSON" đúng ý nghĩa mình chú thích. Paste đường dẫn tới file JSON lưu ở bước 1. Đây cũng là lý do vì sao mình bảo nên để ở cùng thư mục so với file index của webpage, vì khi này chỉ cần nhập:
+  - Nếu trên webpage chưa có `<script src="khplayer.js"></script>`, nhấn "Tạo mới":
+    
+    <details>
+      <summary>Xem thêm</summary>
 
-        ```javascript
-        jsonPath='["./KHP_123456"]'
-        // Để ý: ngoài cùng là ngoặc đơn, bọc quanh các phần tử là ngoặc kép
+      - Nhấn "Tải file JSON", upload lên cloud có direct link ([đọc phần này](#tips))
+      - Nhấn "Sao chép container", dán vào vị trí muốn đặt playlist player trên webpage (dùng id khác nhớ edit phần tử cuối trong file JSON vừa tải).
+      - Tiếp đến thêm `<script>` này vào webpage, chỗ nào cũng được:
+        ```html
+        <script defer src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@5.3/dist/khplayer.min.js" jsonPath='<array (các) đường dẫn đến file JSON>'></script>
         ```
+      - Phần "array các đường dẫn đến fle JSON" dán link trực tiếp file .json
 
-  - Nếu trước đó:
-    - Cũng nhấn "Tạo mới" Làm bước 1 và 2 như trên.
-    - Thêm đường dẫn tới file JSON mới này vào array jsonPath nằm trong thẻ ```<script>``` đã từng add vào webpage ở trường hợp trên, ví dụ:
-
-        ```javascript
-        jsonPath='["./KHP_123456","./KHP_654321"]'
-        // Và tương tự đối với các playlist player sau
-        jsonPath='["./KHP_123456","./KHP_654321","./KHP_13579",...]'
+          ```javascript
+          jsonPath='["//example.com/KHP_123456.json"]'
+          // Ngoài cùng là ngoặc đơn, bọc quanh các phần tử là ngoặc kép
         ```
+      
+    </details>
 
-  - Nếu thêm video vào playlist player đã tạo trước đó, nhấn "Thêm vào playlist đã có", copy đoạn data được generate và chèn vào data trong file JSON, trước 2 element cuối.
+  - Nếu webpage đã có `<script src="khplayer.js"><script>`:
+    <details>
+      <summary>Xem thêm</summary>
 
-<hr width='50%''>
+      - Cũng nhấn "Tạo mới" Làm bước 1 và 2 như trên.
+      - Thêm đường dẫn tới file JSON mới này vào array jsonPath nằm trong thẻ ```<script>``` trên ví dụ:
+
+          ```javascript
+          jsonPath='["//example.com/KHP_123456.json","//example.com/KHP_654321.json"]'
+          ```
+
+    </details>
+
+  - Nếu thêm video vào playlist player đã tạo trước đó, nhấn "Thêm vào playlist đã có", copy đoạn data được generate và thêm vào array trong file JSON trước 2 element cuối.
+
+<hr width='50%'>
 
 ### D. Lưu ý
  - Đối với định dạng m3u8, KHPlayer chưa hỗ trợ nhiều độ phân giải cùng lúc. Trên trang Generator vẫn để được phép chọn nhiều source để sau này (có thể) sẽ bổ sung tính năng.
 
+<hr>
+
+<div id="tips">
+
+# Link trực tiếp:
+- [Lấy link download trực tiếp trên dropbox, OneDrive - Blog chia sẻ kiến thức](https://blogchiasekienthuc.com/thu-thuat-internet/lay-link-download-truc-tiep-direct-link-tren-dropbox-onedrive.html#:~:text=Direct%20link%20l%C3%A0%20d%E1%BA%A1ng%20link,th%C3%AAm%20m%E1%BB%99t%20l%E1%BA%A7n%20n%C3%A0o%20n%E1%BB%AFa.)
+- [Cách tạo direct link Google Drive - GDrive.vip](https://gdrive.vip/cach-tao-direct-link-google-drive-tai-truc-tiep-google-drive-direct-download-link-generator/)
+- File trên Google Drive [nhỏ hơn 100MB](https://support.google.com/a/answer/172541?hl=en) dùng link dạng: `https://drive.google.com/uc?export=download&id=xxxxxxxxxxxxxxxx`.
+- File trên OneDrive 5TB thay `?e=xxxxx` bằng `?download=1`
+- Dùng [Fast.io](https://fast.io/) đối với:
+  - Google Drive cá nhân/unlimited
+  - OneDrive cá nhân/5TB
+  - Dropbox
+  - Box
+  - MediaFire
+  - GitHub<br><br>
+- <details><summary>Nếu đang sử dụng static site generator như Hugo, Jekyll,...:</summary>
+  
+  - Dữ liệu nằm cùng thư mục với index.html<br><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/same.png"><br>
+    ```
+    data.json
+    ```
+  - Dữ liệu nằm trong thư mục con<br><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/children.png"><br>
+    ```
+    assets/json/data.json
+    assets/vtt/data.vtt
+    ```
+  - Dữ liệu nằm trong thư mục "phụ huynh"<br><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/parent.png"><br>
+    ```
+    ../data.json
+    ```
+  - Không rõ vì sao bạn lại muốn để file theo kiểu này nhưng<br>
+    Dấu gạch "/" ở đầu nghĩa là lấy file từ domain gốc
+
+      ```
+      /data.ext = "//example.com/data.ext"
+      ```
+    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/root.png">
+
+    - Trong index.html
+      ```
+      /assets/json/post2.data.json
+      /assets/vtt/post3.subtitle.vtt
+      
+      <=>
+      
+      assets/json/post2.data.json
+      assets/vtt/post3.subtitle.vtt
+      ```
+    - Trong post2.html, post3.html
+      ```
+      /assets/json/post2.data.json
+      /assets/vtt/post3.subtitle.vtt
+      
+      <=>
+      
+      ../assets/json/post2.data.json
+      ../assets/vtt/post3.subtitle.vtt
+      ```
+
+</details>
+</div>
 <hr>
 
 # Credit
