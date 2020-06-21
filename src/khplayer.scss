@@ -62,25 +62,52 @@ div.plyr {
   margin-top: 0;
   position: absolute;
   top: 0;
+  left: 0;
   height: 100%;
   max-width: 100%;
   width: 400px;
   z-index: 3;
-  opacity: 1;
+  // opacity: 1;
+  overflow: hidden;
   transition: transform $transition;
-
-  &.hideEmbedKHPPlaylist {
+  &.hidden {
+    // opacity: 0;
     transition: transform $transition;
     transform: translateX(-100%);
+  }
+  &>div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      position: relative;
+
+    }
+    .closeEmbed {
+      position: absolute;
+      right: 24px;
+      top: 12px;
+      width: 40px;
+      height: 40px;
+      z-index: 4;
+      color: $mainColor;
+      cursor: pointer;
+      // box-shadow: ;
+    }
   }
 }
 
 .KHPPlaylistContainer,
-.EmbedKHPPlaylist {
+.EmbedKHPPlaylist>div>ul {
   background-color: rgba(0, 0, 0, 0.8);
   padding: .2rem;
-  list-style-type: none;
   overflow: auto;
+  list-style-type: none;
+  margin: 0;
 
   li {
     padding: .5rem;
@@ -127,14 +154,19 @@ div.plyr {
   // --plyr-font-size-smal: 40px;
   border-radius: 5px 5px 0 0;
 
-  &:-webkit-full-screen {
-    .plyr__captions {
-      // font-size: $fullScreenCaptionsSize !important;
-    }
+
+  .plyr__video-wrapper {
+    z-index: 2;
   }
 
   .plyr__controls {
+    z-index: 3;
+
     .customBtn {
+      position: relative;
+      bottom: 0;
+      // z-index: 4 !important;
+
       svg {
         transform: scale(1.15);
       }
@@ -144,7 +176,7 @@ div.plyr {
 
   .systemDetectHistory {
     position: absolute;
-    z-index: 1000;
+    z-index: 69;
     width: 100%;
     height: 100%;
     display: flex;

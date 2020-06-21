@@ -96,8 +96,8 @@ const KHPlayer = {
       let playingDataJSON = JSON.parse(playingData),
         confirmi18n = KHPlayer.configurator.i18n.continueWatchingConfirm;
       // Source: https://stackoverflow.com/a/25279340
-      KHPlayer._insertBefore(
-        UKS + ' .plyr__video-wrapper video',
+      KHPlayer.insertAfter(
+        UKS + ' .plyr>.plyr__control',
         `<div class="systemDetectHistory">
           <div class="text">${confirmi18n._1} ${KHPlayer.data[uniqueKey][playingDataJSON.epIndex].title} ${confirmi18n._2} ${new Date(playingDataJSON.time * 1000).toISOString().substr(11, 8)}<br>${confirmi18n._3}</div>
           <div class="actions">
@@ -126,7 +126,7 @@ const KHPlayer = {
     // <i class="fas fa-bars fa-lg"></i>
     KHPlayer.insertAfter(
       UKS + " .plyr__controls>.plyr__menu",
-      `<button class="plyr__controls__item plyr__control customBtn" type="button" onclick="KHPlayer.togglePlaylist('${uniqueKey}')">
+      `<button class="plyr__controls__item plyr__control customBtn" type="button" onclick="KHPlayer.toggleEmbedPlayllist('${uniqueKey}')">
       <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" class="svg-inline--fa fa-list-ul fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg>
       <span class="plyr__tooltip">${KHPlayer.configurator.i18n.toggleEmbedPlayllist}</span>
       </button>`,
@@ -155,16 +155,20 @@ const KHPlayer = {
     );
     //#endregion
 
-    //#region Thêm KHPPlaylistContainer vào trong container chứa <video> (để overlay)
+    //#region Thêm KHPPlaylistContainer
     /* Source:
       https://stackoverflow.com/a/18602389
       https://www.w3schools.com/jsref/met_node_clonenode.asp
     */
     KHPlayer._insertBefore(
-      UKS + ' .plyr__video-wrapper video',
-      d.querySelector(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true)
+      UKS + ' .plyr>.plyr__control',
+      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}'><div></div></div>`)
     );
-    d.querySelector(UKS + " .plyr__video-wrapper .KHPPlaylistContainer").setAttribute("class", "EmbedKHPPlaylist hideEmbedKHPPlaylist");
+    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(d.querySelector(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true));
+    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(KHPlayer.htmlToElement(`<div class="closeEmbed"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg></div>`));
+    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div>.KHPPlaylistContainer`).removeAttribute("class");
+
+    // d.querySelector(UKS + " .plyr>.KHPPlaylistContainer").setAttribute("class", "EmbedKHPPlaylist hidden");
     //#endregion
 
     //#region Gán trạng thái player vào localStorage (đang fullscreen hay bình thường) để khi chuyển sang tập khác sẽ auto fullscreen lại hay không
@@ -175,10 +179,38 @@ const KHPlayer = {
     KHPlayer.plyr[uniqueKey][0].on("exitfullscreen", event => {
       localStorage.removeItem("IsFullScreen_" + uniqueKey);
     });
-    if (!d.querySelector(UKS + " .EmbedKHPPlaylist")) {
-      d.querySelector(UKS + " .plyr__video-wrapper").addEventListener("click", () => {
-        d.querySelector(UKS + " .EmbedKHPPlaylist").classList.add("hideEmbedKHPPlaylist");
-      });
+    d.querySelector(UKS + " .plyr__video-wrapper").addEventListener("click", () => {
+      this.toggleEmbedPlayllist(uniqueKey, "hide");
+    });
+    d.querySelector(UKS + " .closeEmbed").addEventListener("click", () => {
+      this.toggleEmbedPlayllist(uniqueKey, "hide");
+    });
+  },
+  toggleEmbedPlayllist(uniqueKey, singleAction) {
+    let d = document,
+      elem = d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']`),
+      showPL = function () {
+        elem.classList.remove("hidden");
+        elem.style.visibility = "visible";
+      },
+      hidePL = function () {
+        elem.classList.add("hidden");
+        elem.addEventListener("transitionend", () => {
+          elem.style.visibility = "hidden";
+        }, { once: true });
+      };
+    if (singleAction) {
+      switch (singleAction) {
+        case "show": showPL(); break;
+        case "hide": hidePL(); break;
+        default: hidePL();
+      }
+    } else {
+      if (elem.classList.contains("hidden")) {
+        showPL();
+      } else {
+        hidePL();
+      }
     }
   },
   // Function đổi tập. Thay vì loop epindex như trước, gây một vài vấn đề về tương thích, mình gán luôn function vào mỗi <li> trong DOM, kèm theo this
@@ -262,7 +294,7 @@ const KHPlayer = {
     }
     // Lưu thời gian video đang xem mỗi 1 giây vào localStorage
     // Đầu tiên tạo interval rỗng -> clear đi -> tạo lại cái mới, tránh dẫn đến việc nhiều cái setInterval khác nhau
-    let saveCurrTimeEp = setInterval(function () {}, 1000);
+    let saveCurrTimeEp = setInterval(function () { }, 1000);
     clearInterval(saveCurrTimeEp);
     saveCurrTimeEp = setInterval(() => {
       let watchVideoState = {
@@ -304,13 +336,13 @@ const KHPlayer = {
     }
   },
   // Ẩn/hiện embed playlist trong <video> container
-  togglePlaylist(uniqueKey) {
-    /* Source:
-      https://www.w3schools.com/howto/howto_js_toggle_class.asp
-      https://stackoverflow.com/a/16177700
-    */
-    document.querySelector("#" + uniqueKey + " .EmbedKHPPlaylist").classList.toggle("hideEmbedKHPPlaylist");
-  },
+  // togglePlaylist(uniqueKey) {
+  //   /* Source:
+  //     https://www.w3schools.com/howto/howto_js_toggle_class.asp
+  //     https://stackoverflow.com/a/16177700
+  //   */
+  //   document.querySelector("#" + uniqueKey + " .EmbedKHPPlaylist").classList.toggle("hidden");
+  // },
   selectCurrEp(uniqueKey) {
     return document.querySelector(`#${uniqueKey} .KHPPlaylistContainer li[playing='true']`);
   },
@@ -421,10 +453,12 @@ KHPlayer.jsonPaths.forEach(function (e) {
       language: 'auto',
       update: true
     },
+    speed: { selected: 1, options: [0, 25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
     tooltips: {
       controls: true,
       seek: true
     },
+    blankVideo: "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/blank.mp4",
     // Vietnamese
     i18n: {
       restart: 'Khởi động lại',
@@ -476,9 +510,9 @@ KHPlayer.jsonPaths.forEach(function (e) {
       continueWatchingConfirm: {
         'yes': 'Có',
         'no': 'Không',
-        '_1': 'Hệ thống nhận thấy bạn đã xem đến tập',
+        '_1': 'Bạn đang xem<br>',
         '_2': 'tại',
-        '_3': 'Bạn có muốn tiếp tục không?'
+        '_3': 'Tiếp tục chứ?'
       }
     },
     // English
