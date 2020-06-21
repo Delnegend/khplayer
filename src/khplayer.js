@@ -194,6 +194,9 @@ const KHPlayer = {
     d.querySelector(UKS + " .closeEmbed").addEventListener("click", () => {
       this.toggleEmbedPlayllist(uniqueKey, true);
     });
+    let speedSelectCtn = document.querySelector(`.plyr button[data-plyr="speed"]`).parentNode;
+    speedSelectCtn.style.maxHeight = "110px";
+    speedSelectCtn.style.overflow = "auto";
   },
   toggleEmbedPlayllist(uniqueKey, hideOnly) {
     let d = document,
