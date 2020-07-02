@@ -3,7 +3,7 @@
 ## **Tính năng chính**
 Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/demo/) mà không động đến CSS, JS
 
-<img src='./README_Data/khplayer-demo.png'>
+<img src='./others/README_Data/khplayer-demo.png'>
 
 ## **Các tính năng khác**
 - **Playlist.** *(KHPlayer)*
@@ -56,7 +56,7 @@ Framework Plyr
   ```
 
   - Upload video và ảnh bìa lên cloud storage có direct link ([đọc phần này](#tips)).<br><br>
-    <img src="README_Data/what-is-direct-link.png">
+    <img src="others/README_Data/what-is-direct-link.png">
 
   </details>
 
@@ -65,7 +65,7 @@ Framework Plyr
 
   Dịch sơ qua là ảnh xem trước như thế này
 
-  <img src='./README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
+  <img src='./others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   Bao gồm nhiều file ảnh preview hoặc ghép hết thành 1 (sprite thumbnail) và 1 file .vtt cho biết ảnh preview nào ở đoạn nào. Ở đây mình hướng dẫn tạo cho trường hợp sprite thumbnail:
 
@@ -73,11 +73,11 @@ Framework Plyr
   - [Điền form này](https://khplayer.delnegend.xyz/genSpriteThumbCode/), chưa cần điền `Link ảnh trực tiếp`.
   - Mở powershell/terminal > `cd "D:\thư\mục\chứa\file\video.mp4"` > dán câu lệnh `Tạo file jpg` > Enter.
   - Upload file .jpg lên cloud, lấy link trực tiếp rồi dán vào `Link ảnh trực tiếp` trong form trên. ([đọc phần này](#tips))
-  - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
+  - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
   - Quay lại powershell/terminal > `cd "D:\thư\mục\vừa\trên\"` > dán câu lệnh `Tạo file vtt` trong form và Enter.
   - Upload file .vtt lên cloud có direct link ([đọc phần này](#tips)) không bị chặn [CORS](https://topdev.vn/blog/cors-la-gi/), nếu có thì sử dụng một số CORS proxy như [thingproxy](https://github.com/Freeboard/thingproxy), [yacdn.org](https://github.com/ovsoinc/yacdn.org),...<br>
   Ngắn gọn: CORS là cơ chế chặn/cho phép website khác sử dụng tài nguyên từ website mình. Như này là bị chặn:<br><br>
-    <img src="README_Data/cors-blocked-demo.png" style="max-width: 585px; width: 100%; height: auto"><br><br>
+    <img src="others/README_Data/cors-blocked-demo.png" style="max-width: 585px; width: 100%; height: auto"><br><br>
     Đối với link OneDrive/Google Drive hãy rút gọn qua [bit.ly](https://bit.ly/) (hoặc bất cứ url shortenter nào) để "ẩn" phần `?export=download`, `?download=1`,... tránh xung đột với param của các proxy.
 
   </details>
@@ -155,18 +155,18 @@ Framework Plyr
 - <details><summary>Nếu đang sử dụng static site generator như Hugo, Jekyll,...:</summary>
   
   - Dữ liệu nằm cùng thư mục với index.html<br><br>
-    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/same.png"><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="others/README_Data/staticsite/same.png"><br>
     ```
     data.json
     ```
   - Dữ liệu nằm trong thư mục con<br><br>
-    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/children.png"><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="others/README_Data/staticsite/children.png"><br>
     ```
     assets/json/data.json
     assets/vtt/data.vtt
     ```
   - Dữ liệu nằm trong thư mục "phụ huynh"<br><br>
-    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/parent.png"><br>
+    <img style="max-width: 300px; width: 100%; height: auto" src="others/README_Data/staticsite/parent.png"><br>
     ```
     ../data.json
     ```
@@ -176,7 +176,7 @@ Framework Plyr
       ```
       /data.ext = "//example.com/data.ext"
       ```
-    <img style="max-width: 300px; width: 100%; height: auto" src="README_Data/staticsite/root.png">
+    <img style="max-width: 300px; width: 100%; height: auto" src="others/README_Data/staticsite/root.png">
 
     - Trong index.html
       ```
