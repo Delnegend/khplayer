@@ -1,9 +1,9 @@
 <img src="./dist/default_wating.svg" width="100%" height="auto">
 
 ## **Tính năng chính**
-Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/demo/) mà không động đến CSS, JS
+Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/others/demo/) mà không động đến CSS, JS
 
-<img src='./others/README_Data/khplayer-demo.png'>
+<img src='others/README_Data/khplayer-demo.png'>
 
 ## **Các tính năng khác**
 - **Playlist.** *(KHPlayer)*
@@ -38,7 +38,7 @@ Framework Plyr
 
 ### B. Chuẩn bị nguyên liệu
 - <details>
-  <summary>Video | Ảnh bìa nếu muốn</summary>
+    <summary>Video | Ảnh bìa nếu muốn</summary>
 
   - File video sử dụng 1 trong những codec/format [này](https://www.encoding.com/html5-video-codec/).<br>
     Ngắn gọn: video AVC (H264) + audio AAC + format .mp4 tương thích nhất.
@@ -65,12 +65,12 @@ Framework Plyr
 
   Dịch sơ qua là ảnh xem trước như thế này
 
-  <img src='./others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
+  <img src='others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   Bao gồm nhiều file ảnh preview hoặc ghép hết thành 1 (sprite thumbnail) và 1 file .vtt cho biết ảnh preview nào ở đoạn nào. Ở đây mình hướng dẫn tạo cho trường hợp sprite thumbnail:
 
   - Cài [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Điền form này](https://khplayer.delnegend.xyz/genSpriteThumbCode/), chưa cần điền `Link ảnh trực tiếp`.
+  - [Điền form này](https://khplayer.delnegend.xyz/others/genSpriteThumbCode/), chưa cần điền `Link ảnh trực tiếp`.
   - Mở powershell/terminal > `cd "D:\thư\mục\chứa\file\video.mp4"` > dán câu lệnh `Tạo file jpg` > Enter.
   - Upload file .jpg lên cloud, lấy link trực tiếp rồi dán vào `Link ảnh trực tiếp` trong form trên. ([đọc phần này](#tips))
   - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
@@ -86,7 +86,7 @@ Framework Plyr
     <summary>File phụ đề .vtt (nếu muốn)</summary>
   
   - Convert .ass hay .srt sang .vtt: [Google](https://google.com)
-  - Kiểm tra .vtt "chuẩn" [quuz.org/webvtt/](https://quuz.org/webvtt/) | [dự phòng]([khplayer.delnegend.xyz/VTT_validation/](https://khplayer.delnegend.xyz/VTT_Validation/))
+  - Kiểm tra .vtt "chuẩn" [quuz.org/webvtt/](https://quuz.org/webvtt/) | [dự phòng](https://khplayer.delnegend.xyz/others/VTT_Validation/)
   - Upload lên cloud có direct link ([đọc phần này](#tips)).<br>
     Tương tự như file .vtt preview thumbnail, cần lưu ý tới [CORS](https://topdev.vn/blog/cors-la-gi/).
   
@@ -94,7 +94,7 @@ Framework Plyr
 <hr width='50%'>
 
 ### C. Build lên thành player
-  - Điền form [này](https://khplayer.delnegend.xyz).<br> (DL viết tắt cho direc link - link trực tiếp)
+  - Điền form [này](https://khplayer.delnegend.xyz/others/genScreen).<br> (DL viết tắt cho direc link - link trực tiếp)
   Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
   - Nếu trên webpage chưa có `<script src="khplayer.js"></script>`, nhấn "Tạo mới":
     
