@@ -150,7 +150,7 @@ div.plyr {
   --plyr-font-smoothing: true;
   border-radius: 5px 5px 0 0;
 
-  .plyr__video-wrapper {
+  .plyr__video-wrapper,.plyr__captions {
     z-index: 2;
   }
 
@@ -160,14 +160,11 @@ div.plyr {
     .customBtn {
       position: relative;
       bottom: 0;
-      // z-index: 4 !important;
-
       svg {
         transform: scale(1.15);
       }
     }
   }
-
 
   .systemDetectHistory {
     position: absolute;
@@ -242,7 +239,6 @@ div.plyr {
 @media screen and (max-width: 500px) {
   .plyr {
     .plyr__controls {
-
       .nextEpBtn,
       .prevEpBtn,
       button[data-plyr="pip"] {
