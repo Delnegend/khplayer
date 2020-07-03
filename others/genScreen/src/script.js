@@ -6,7 +6,7 @@
 // Tốc độ hiệu ứng
 const KHPGen = {
   aniSpeed: "fast",
-  minus_icon: `<i class='fas fa-minus plmns'></i>`,
+  minus_icon: `➖`,
   aniReplaceHTML(selector, content, duration) {
     $(selector).fadeOut(duration, () => $(selector).html(content).fadeIn(duration));
   },
@@ -98,13 +98,13 @@ const KHPGen = {
     const RAW_DATA = [];
 
     // Lấy url của poster tổng, để ngoài này thay vì trong vòng lặp dưới để tránh việc #masterPosterInput bị fetch nhiều lần, ảnh hưởng tới hiệu năng
-    let inputMasPoster = $("#masterPosterInput").val(),
-      finalMasPoster;
-    if (inputMasPoster) {
-      finalMasPoster = inputMasPoster;
-    } else {
-      finalMasPoster = "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg";
-    }
+    let finalMasPoster = $("#masterPosterInput").val() || "";
+    //   finalMasPoster;
+    // if (inputMasPoster) {
+    //   finalMasPoster = inputMasPoster;
+    // } else {
+    //   finalMasPoster = "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg";
+    // }
 
     // Xử lý từng episode
     $("#userInteractCtn .episode_container").each((index, value) => {

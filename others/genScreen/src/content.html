@@ -4,17 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./genScreen/dist/vendor.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/fa-pro@5.13.0/css/all.min.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/fonts@0.6/NotoSans.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js" integrity="sha384-KQ8aykg/lc6595wSrMplFVs4kRS66x+EdkX7EQsJ2Pe6FX7l3tMqyD1Am0c2dKBG" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="libs/css/bootstrap-4.5.0.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/fa-pro@5.13.1/css/all.min.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/fonts@0.6/NotoSans.min.css"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.min.css"> -->
+  <link rel="stylesheet" href="libs/css/prism-1.20.0.min.css">
+  <link rel="stylesheet" href="dist/vendor.min.css">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="favicon/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js" integrity="sha384-KQ8aykg/lc6595wSrMplFVs4kRS66x+EdkX7EQsJ2Pe6FX7l3tMqyD1Am0c2dKBG" crossorigin="anonymous"></script> -->
+  <script src="libs/js/FileSaver-2.0.2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" integrity="sha384-x6nRSkfSsKGBsvlLFHHNju+buS3zYUztVnTRz/0JKgOIk3ulS6bNce/vHOvYE2eY" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" integrity="sha384-x6nRSkfSsKGBsvlLFHHNju+buS3zYUztVnTRz/0JKgOIk3ulS6bNce/vHOvYE2eY" crossorigin="anonymous"></script> -->
+  <script src="libs/js/clipboard-2.0.6.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script> -->
+  <script src="libs/js/prism-1.20.0.min.js"></script>
+
   <title>KHPlayer Generator</title>
 </head>
 
@@ -69,8 +85,8 @@
       <!-- Input_tiêu_đề_và_poster -->
       <div class="essentials">
         <input class="form-control title" type="text" placeholder="Tiêu đề">
-        <input class="form-control poster" type="text" placeholder="DL ảnh bìa (nếu muốn)">
-        <input class="form-control previewThumbnail" type="text" placeholder="DL preview thumbnail">
+        <!-- <input class="form-control poster" type="text" placeholder="DL ảnh bìa (nếu muốn)"> -->
+        <input class="form-control previewThumbnail" type="text" placeholder="DL preview thumbnail (nếu muốn)">
       </div>
 
       <!-- Container_nguồn -->
@@ -124,7 +140,7 @@
 
           <!-- Nút_thêm_nguồn -->
           <button type="button" class="btn" style="margin-left:1em" id='addSourceBtn' onclick="KHPGen.ADD_SOURCE(this)">
-            <i class="fas fa-plus plmns"></i>
+            ➕
           </button>
           <!-- Nút_thêm_nguồn:end -->
         </div>
@@ -141,7 +157,7 @@
           <input class="form-control capionSrc" type="text" placeholder="DL file phụ đề">
           <!-- Nút_thêm_sub -->
           <button type="button" class="btn" style="margin: 0 0 1em 1em" id='addCaptionBtn' onclick="KHPGen.ADD_CAPTIONS(this)">
-            <i class="fas fa-plus plmns"></i>
+            ➕
           </button>
           <!-- Nút_thêm_sub:end -->
         </div>
@@ -152,7 +168,7 @@
       <!-- Nút_thêm_tập -->
       <div class="addRemoveEpBtn">
         <button type="button" class="btn" style="margin-left: 1em" id="addEpBtn" class="EpBtn_dne" onclick="KHPGen.ADD_EPISODE(this)">
-          <i class="fas fa-plus plmns"></i>
+          ➕
         </button>
       </div>
     </div>
@@ -160,7 +176,7 @@
 
   </div>
 
-  <script src="./genScreen/dist/vendor.min.js"></script>
+  <script src="dist/vendor.min.js"></script>
 </body>
 
 </html>
