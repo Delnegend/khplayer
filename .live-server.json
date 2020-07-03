@@ -1,5 +1,4 @@
 {
   "host": "localhost",
-  "root": "./",
-  "watch": ["dist","others/genScreen/dist","others/genSpriteThumb","others/VTT_Validation"]
+  "root": "./"
 }
