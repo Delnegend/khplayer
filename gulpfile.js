@@ -8,12 +8,12 @@ const {
   dest,
   series,
   watch,
-  // gulp
+  gulp
 } = require('gulp'),
   rename = require("gulp-rename"),
   sourcemaps = require('gulp-sourcemaps'),
   minify = require('gulp-minify'),
-  concat = require('gulp-concat'),
+  // concat = require('gulp-concat'),
   minifyHTML = require("gulp-htmlmin");
 
 var khplayerGulp = {
@@ -23,7 +23,7 @@ var khplayerGulp = {
   export: {
     js() {
       return src(khplayerGulp.path.js)
-        .pipe(rename("khplayer.js"))
+        // .pipe(rename(khplayerGulp.path.js))
         .pipe(sourcemaps.init())
         .pipe(minify({
           mangle: false,
@@ -63,34 +63,6 @@ var genScreenGulp = {
         .pipe(sourcemaps.write("./"))
         .pipe(dest(genScreenGulp.path.dist));
     },
-    // css() {
-    //   return src(genScreenGulp.path.sass)
-    //     .pipe(rename(genScreenGulp.name.css))
-    //     .pipe(rename(function (path) {
-    //       return {
-    //         dirname: path.dirname + "/",
-    //         basename: path.basename + ".min",
-    //         extname: ".css",
-    //       };
-    //     }))
-    //     .pipe(sourcemaps.init())
-    //     .pipe(minify({
-    //       mangle: false,
-    //       noSource: true,
-    //       ext: {
-    //         min: ".min.css"
-    //       }
-    //     }))
-    //     .pipe(sass.sync({
-    //       "outputStyle": "compressed",
-    //     }).on('error', sass.logError))
-    //     .pipe(autoprefixer({
-    //       cascade: true
-    //     }))
-    //     .pipe(sourcemaps.write("./"))
-    //     .pipe(dest(genScreenGulp.path.dist))
-    //     .pipe(browserSync.stream());
-    // },
     html() {
       return src(genScreenGulp.path.html)
         .pipe(minifyHTML({
@@ -108,5 +80,7 @@ var genScreenGulp = {
 
 exports.build = parallel(khplayerGulp.export.js, genScreenGulp.export.js, genScreenGulp.export.html);
 exports.watch = series(exports.build, function () {
-  watch([genScreenGulp.path.js, genScreenGulp.path.html, khplayerGulp.path.js, "others/demo/index.html"], {}, exports.build);
+  watch(genScreenGulp.path.js, genScreenGulp.export.js);
+  watch(genScreenGulp.path.html, genScreenGulp.export.html);
+  watch(khplayerGulp.path.js, khplayerGulp.export.js);
 });
