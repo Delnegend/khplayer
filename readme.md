@@ -1,4 +1,4 @@
-<img src="./dist/default_wating.svg" width="100%" height="auto">
+<img src="dist/default_waiting.svg" width="100%" height="auto">
 
 ## **Tính năng chính**
 Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/others/demo/) mà không động đến CSS, JS
