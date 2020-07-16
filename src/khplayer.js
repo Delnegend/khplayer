@@ -153,7 +153,7 @@ const KHPlayer = {
     */
     KHPlayer._insertBefore(
       UKS + ' .plyr>.plyr__control',
-      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}' style='visibility: hidden'><div></div></div>`)
+      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}' style='opacity: 0'><div></div></div>`)
     );
     d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(d.querySelector(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true));
 
@@ -189,12 +189,12 @@ const KHPlayer = {
       elem = d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']`),
       showPL = () => {
         elem.classList.remove("hidden");
-        elem.style.visibility = "visible";
+        elem.style.opacity = "1";
       },
       hidePL = () => {
         elem.classList.add("hidden");
         elem.addEventListener("transitionend", () => {
-          elem.style.visibility = "hidden";
+          elem.style.opacity = "0";
         }, {
           once: true
         });
