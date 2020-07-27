@@ -72,23 +72,28 @@ khplayer-container {
 
 
   // Màu nền playlist
+  // Playlist bg
   --list-bg: rgba(0, 0, 0, 0.8);
   // Màu nền nút chọn tập
+  // Select episode bg
   --ep-bg: rgba(255, 255, 255, 0.1);
   // Màu chữ nút chọn tập
+  // Select episode text color
   --ep-text: rgba(255, 255, 255, 0.6);
   // Màu chữ tập đang phát
+  // Playing episode text color
   --ep-active: yellow;
   // Hiệu ứng nền embed playlist
+  // Embed playlist backdrop-filter
   --bdft-embedplaylist: var(--bg-tp-fx);
 
   // Màu thanh cuộn
+  // Scrollbar color
   --scrollbar-color: var(--main-color);
+  // Plyr's menus backdrop-filter
   // Hiệu ứng nền menu plyr
   --bdft-menu: var(--bg-tp-fx);
 
-  overflow: hidden;
-  /* KHÔNG XOÁ DÒNG NÀY | DO NOT REMOVE THIS LINE */
 
   * {
     font-family: var(--font) !important;
@@ -215,7 +220,9 @@ khplayer-container {
     --plyr-font-size-xlarge: 30px;
     --plyr-menu-background: rgba(0, 0, 0, .6);
     --plyr-menu-color: white;
-    
+
+    /* KHÔNG XOÁ DÒNG NÀY | DO NOT REMOVE THIS LINE */
+    overflow: hidden !important;
     border-radius: 5px 5px 0 0;
 
     .plyr__menu__container {
@@ -329,6 +336,7 @@ khplayer-container {
   @media screen and (max-width: 500px) {
     .plyr {
       .plyr__controls {
+
         .nextEpBtn,
         .prevEpBtn,
         button[data-plyr="pip"],
