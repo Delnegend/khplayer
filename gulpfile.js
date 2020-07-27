@@ -8,13 +8,13 @@ const {
   dest,
   series,
   watch,
-  gulp
 } = require('gulp'),
   rename = require("gulp-rename"),
   sourcemaps = require('gulp-sourcemaps'),
   minify = require('gulp-minify'),
   // concat = require('gulp-concat'),
-  minifyHTML = require("gulp-htmlmin");
+  minifyHTML = require("gulp-htmlmin"),
+  replace = require('gulp-replace');
 
 var khplayerGulp = {
   path: {
@@ -26,12 +26,14 @@ var khplayerGulp = {
         // .pipe(rename(khplayerGulp.path.js))
         .pipe(sourcemaps.init())
         .pipe(minify({
-          mangle: false,
-          noSource: true,
+          mangle: true,
+          noSource: false,
+          preserveComments: "some",
           ext: {
             min: ".min.js"
           }
         }))
+        .pipe(replace(/ {2,}/g, ''))
         .pipe(sourcemaps.write("./"))
         .pipe(dest("dist"));
     }
