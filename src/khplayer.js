@@ -1,403 +1,365 @@
-/*
-NOTE:
-Đầu tiên client add Plyr.js và khplayer.js. Ở tag của khplayer.js kèm theo 1 attribute jsonPath, value là 1 array (tất nhiên là kiểu string, sau khi đem vào đây thì JSON.parse ra), đồng thời phải nhét thêm defer vào nếu đặt trước cặp thẻ <div> container của từng playlist player
-
-Array chứa đường dẫn tới file JSON chứa dữ liệu của 1 tập hợp các video như: URL, phụ đề, tiêu đề, độ phân giải, poster, abcxyz... Mình gọi array trong file JSON này là Array mẹ (để dễ ghi chú ở dưới)
-
-Element cuối của Array mẹ là một uniqueKey, đồng thời là ID của thẻ container nói ở ý đầu tiên. Ngay trước element này là URL dẫn tới poster chính của player
-*/
+//! ================================================
+//! KHPLayer
+//! Version: 6.0
+//! Homepage/repo: https://khplayer.delnegend.xyz --redirect--> https://github.com/DELNEGEND/khplayer
+//! License: The MIT License (MIT)
+//! ================================================
 // jshint esversion: 9
+// jshint expr:true
 
 const KHPlayer = {
+  // Syntax lát nữa dùng ngắn hơn
+  // Sorter syntax for later use
+  d: document,
+  s(e) {
+    return this.d.querySelector(e);
+  },
+  id(e) {
+    return this.d.getElementById(e);
+  },
+  // Source: https://stackoverflow.com/a/1349426
+  randomString(length = 20) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    return "_" + result + btoa(new Date().getTime()).replace(/=/g, "");
+  },
+  // Init Plyr
   // Khởi tạo Plyr
   initPlyr(uniqueKey, previewThumbnails = false) {
-    // Phải nói ở chỗ này mình khôn vl ra. Clone config vào customConfig từ KHPlayer, check trong dữ liệu của tập được init trong JSON có previewThumbnails hay không thì edit customConfig để enable lên, đồng thời thêm source vào.
-    let customConfig = Object.assign({}, KHPlayer.configurator);
-    if (previewThumbnails) customConfig.previewThumbnails = {
-      enabled: true,
-      src: previewThumbnails.src
-    };
+    // Nếu trong episode cần init có url prevThumbnails thì thêm prevThumb vào customConfig được clone từ config gốc hẵng init, tránh thêm prevThumb vào config gốc.
+    // If prevThumbnails's url exist in need-to-init episode, add it into customConfig - cloned from the original config to avoid adding into the original one
+    let customConfig = Object.assign({}, this.configurator);
+    if (previewThumbnails) {
+      customConfig.previewThumbnails = {
+        enabled: true,
+        src: previewThumbnails.src
+      };
+    }
     return new Promise(function (resolve) {
       resolve(Plyr.setup("#" + uniqueKey + " video", customConfig));
     });
   },
+  // Hàm khởi tạo KHPlayer ở đây
+  // NOTE: ở changeEp(), Plyr được destroy() và init(), những gì -liên quan tới/nằm trong- nó cũng bị phá huỷ theo (embed playlist, các nút toggle, eventListener...). Phần init này chỉ chạy lần đầu tiên để khởi tạo những thứ ngoài tầm với của Plyr, vì vậy nếu có thêm tính năng nào đối với Plyr thì hãy thêm vào phần changeEp
 
-  // Khởi tạo KHPlayer ở đây
-  // NOTE: chính bởi vì ở func đổi tập, mình lựa chọn cách destroy cái cũ đi và init lại cái mới, những eventListener đối với player cũ (để Plyr tương tác) cũng sẽ bị destroy theo. Vì vậy hãy add listener vào trong func đổi tập (ví dụ như cái auto next tập chẳng hạn)
-  async init(url) {
-
-    /* NOTE: Mỗi playlist (Array mẹ), mỗi Container (cái mà client paste vào HTML), mỗi cái player (thực chất là 1 object) để Plyr tương tác đều được gán uniqueKey (là key, ID) để có thể có nhiều player mà không bị conflict lẫn nhau */
+  // KHPlayer init() here
+  // NOTE: in changeEp(), Plyr get destroy() and init() again with new data, anything that -related to/sit inside- Plyr are also destroyed (embed playlist and its toggle btn, next/prev btn, eventListener...), This init() only run once to initiate stuffs outside Plyr's reach, so if you're planning to add any button into Plyr's container or an eventListener, consider using changeEp() or tweaks()
+  async init(uniqueKey) {
     let
-      d = document,
-      // Lấy tạm dữ liệu về PLAYLIST_
-      PLAYLIST_ = await KHPlayer.getJSON(url),
-      // Lấy uniqueKey từ PLAYLIST_
-      uniqueKey = PLAYLIST_[PLAYLIST_.length - 1],
-      UKS = "#" + uniqueKey;
-    // Gán data đã lấy từ trước trong PLAYLIST_ vào KHPLayer.data[uniqueKey]
-    KHPlayer.data[uniqueKey] = PLAYLIST_;
-    // Gọi dữ liệu vào đây để syntax ngắn hơn
-    PLAYLIST = KHPlayer.data[uniqueKey];
-
-    // elem sát cuối là url poster tổng, nếu để trống thì lấy mặc định
-    let poster = PLAYLIST[PLAYLIST.length - 2] || KHPlayer.configurator.defaultPoster;
-
-    // Tạo 1 cái frame bên trong container player
-    d.querySelector(UKS).innerHTML = `
+      khpCtn = this.id(uniqueKey);
+    // Gán dữ liệu vào KHPLayer để lát chuyển tập dùng lại
+    // Assign data into KHPlayer for re-using in changeEp()
+    this.data[uniqueKey] = await this.getJSON(khpCtn.getAttribute("data"));
+    // Syntax ngắn hơn
+    // Shorter syntax
+    PLAYLIST = this.data[uniqueKey];
+    // Getting poster and playingIndicator
+    // Lấy url Poster, playingIndicator
+    let poster = PLAYLIST[PLAYLIST.length - 2] || this.configurator.defaultPoster,
+      historyPlayingIndicator = PLAYLIST[PLAYLIST.length - 1];
+    // Create a frame for Plyr to init
+    // Tạo 1 cái frame cho Plyr bên trong container player
+    khpCtn.innerHTML = `
         <video control playsinline></video>
-        <ul key="${uniqueKey}" class='KHPPlaylistContainer'></ul>`;
+        <ul key="${uniqueKey}" class='KHPPlaylistContainer custom_scrollbar'></ul>`;
     // Set poster
-    d.querySelector(UKS + " video").setAttribute("poster", poster);
-    // Khởi tạo playlist
-    if (PLAYLIST.length >= 3) {
-      // Biến Array mẹ thành GUI, một list chứa các episode
-      for (let index = 0; index < PLAYLIST.length - 2; index++) {
-        let
-          // Gọi data của từng elem trong array "tổng" xuống
-          currVidData = PLAYLIST[index],
-          // Giờ mới create elem
-          currVidTag = d.createElement("li");
-        currVidTag.setAttribute("index", index);
-        // Append mục chọn tập vào container
-        d.querySelector(`#${uniqueKey} .KHPPlaylistContainer`).appendChild(currVidTag); //jshint ignore:line
-        // Gọi mục chọn tập lên
-        let currVidElem = d.getElementById(uniqueKey).querySelector("li[index='" + index + "'");
-        // Gán cho nó cái nội dung (gọi title từ currVidData lên array tổng xuống)
-        currVidElem.innerHTML = currVidData.title;
-        // function đổi tập
-        currVidElem.setAttribute("onclick", `KHPlayer.changeEp(this)`);
-        // Tăng index ở phía trên lên 1, tiếp tục cho mục chọn tiếp theo
-      }
+    khpCtn.querySelector("video").setAttribute("poster", poster);
+    // Tạo playlist dựa trên dữ liệu JSON
+    // Create playlist based on JSON data
+    for (let index = 0; index < PLAYLIST.length - 2; index++) {
+      let
+        elem = this.d.createElement("li");
+      elem.setAttribute("onclick", `KHPlayer.changeEp(this,${index})`);
+      elem.innerHTML = PLAYLIST[index].title;
+      khpCtn.querySelector(`.KHPPlaylistContainer`).appendChild(elem);
     }
 
-    // NOTE: Plyr đc khởi tạo ở chỗ này
-    KHPlayer.plyr[uniqueKey] = await KHPlayer.initPlyr(uniqueKey);
-    KHPlayer.tweaks(uniqueKey);
+    // -- Plyr đc khởi tạo ở chỗ này --
+    // -- Plyr get init here --
+    this.plyr[uniqueKey] = await this.initPlyr(uniqueKey);
+    this.tweaks(uniqueKey);
 
-    // Phần này detect lịch sử xem
-    let playingData = localStorage.getItem("playing_" + uniqueKey);
-    if (playingData != null) {
+    // -- Phần này detect lịch sử xem --
+    // #region -- Detect watching history --
+    let playingData = localStorage.getItem("khplayer_playing_" + historyPlayingIndicator);
+    if (playingData) {
       let playingDataJSON = JSON.parse(playingData),
-        confirmi18n = KHPlayer.configurator.i18n.continueWatchingConfirm;
-      // Source: https://stackoverflow.com/a/25279340
-      KHPlayer.insertAfter(
-        UKS + ' .plyr>.plyr__control',
+        confirmi18n = this.configurator.i18n.continueWatchingConfirm;
+      // Source: timestamp --> regular: https://stackoverflow.com/a/25279340
+      this.insertAfter(
+        khpCtn.querySelector('.plyr>.plyr__control'),
         `<div class="systemDetectHistory">
-          <div class="text">${confirmi18n._1} ${KHPlayer.data[uniqueKey][playingDataJSON.epIndex].title} ${confirmi18n._2} ${new Date(playingDataJSON.time * 1000).toISOString().substr(11, 8)}<br>${confirmi18n._3}</div>
+          <div class="text">${confirmi18n.continueWatching} ${KHPlayer.data[uniqueKey][playingDataJSON.epIndex].title} ${confirmi18n.at} ${new Date(playingDataJSON.time * 1000).toISOString().substr(11, 8)}${confirmi18n.confirm}</div>
           <div class="actions">
             <div class="confirmBtn">
               <div onclick='KHPlayer.acceptContinue("${uniqueKey}", ${playingDataJSON.epIndex}, ${playingDataJSON.time})' class="buttonInner">${confirmi18n.yes}</div>
             </div>
             <div class="confirmBtn">
-              <div onclick='document.querySelector("#${uniqueKey} .systemDetectHistory").classList.add("hideAlert")' class="buttonInner">${confirmi18n.no}</div>
+              <div onclick='KHPlayer.rejectContinue(this)' class="buttonInner">${confirmi18n.no}</div>
             </div>
           </div>
         </div>`,
         true
       );
+      khpCtn.querySelector('.plyr>.plyr__controls').setAttribute('hidden', "");
     }
+    //#endregion
   },
-
-  // Khởi chạy mỗi Plyr được khởi tạo lại, hay mỗi lần đổi tập bởi cái destroy() rồi init lại trong cáo changeEp, lý do vì sao cũng đã giải thích ở dới đó
+  // 
   tweaks(uniqueKey) {
-    let d = document,
-      UKS = "#" + uniqueKey;
+    let khpCtn = this.id(uniqueKey);
 
-    // #region Thêm vài nút chức năng vào player
-    // Nút ẩn/hiện embed playlistCtn
+    // Thêm vài nút chức năng vào Plyr
+    // #region adding a few button into Plyr's container 
+
+    // Nút ẩn/hiện embed playlist
+    // Toggle embed playlist btn
     // <i class="fas fa-bars fa-lg"></i>
-    KHPlayer.insertAfter(
-      UKS + " .plyr__controls>.plyr__menu",
+    this.insertAfter(
+      khpCtn.querySelector(".plyr__controls>.plyr__menu"),
       `<button class="plyr__controls__item plyr__control customBtn" type="button" onclick="KHPlayer.toggleEmbedPlayllist('${uniqueKey}')">
       <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" class="svg-inline--fa fa-list-ul fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg>
-      <span class="plyr__tooltip">${KHPlayer.configurator.i18n.toggleEmbedPlayllist}</span>
+      <span class="plyr__tooltip">${this.configurator.i18n.toggleEmbedPlayllist}</span>
       </button>`,
       true
     );
     // Nút next tập
-    // next/prevEpBtn để responsive, hide đi khi width <= 500px
+    // Next episode btn
     // <i class="fas fa-step-forward fa-lg"></i>
-    KHPlayer.insertAfter(
-      UKS + " .plyr__controls > button:nth-child(1)",
+    this.insertAfter(
+      khpCtn.querySelector(".plyr__controls > button:nth-child(1)"),
       `<button class="plyr__controls__item plyr__control customBtn nextEpBtn" type="button" onclick="KHPlayer.navigateEp(this,'next')">
       <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="step-forward" class="svg-inline--fa fa-step-forward fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M384 44v424c0 6.6-5.4 12-12 12h-48c-6.6 0-12-5.4-12-12V291.6l-195.5 181C95.9 489.7 64 475.4 64 448V64c0-27.4 31.9-41.7 52.5-24.6L312 219.3V44c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12z"></path></svg>
-      <span class="plyr__tooltip">${KHPlayer.configurator.i18n.nextEpisode}</span>
+      <span class="plyr__tooltip">${this.configurator.i18n.nextEpisode}</span>
       </button>`,
       true
     );
     // Nút previous tập
+    // Previous episode btn
     // <i class="fas fa-step-backward fa-lg"></i>
-    KHPlayer._insertBefore(
-      UKS + " .plyr__controls > button:nth-child(1)",
+    this.insertBefore(
+      khpCtn.querySelector(".plyr__controls > button:nth-child(1)"),
       `<button class="plyr__controls__item plyr__control customBtn prevEpBtn" type="button" onclick="KHPlayer.navigateEp(this,'prev')">
       <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="step-backward" class="svg-inline--fa fa-step-backward fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M64 468V44c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v176.4l195.5-181C352.1 22.3 384 36.6 384 64v384c0 27.4-31.9 41.7-52.5 24.6L136 292.7V468c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12z"></path></svg>
-      <span class="plyr__tooltip">${KHPlayer.configurator.i18n.previousEpisode}</span>
+      <span class="plyr__tooltip">${this.configurator.i18n.previousEpisode}</span>
       </button>`,
       true
     );
     //#endregion
 
-    // #region Thêm Playlist vào player
+    // #region Embed playlist
     /* Source:
       https://stackoverflow.com/a/18602389
       https://www.w3schools.com/jsref/met_node_clonenode.asp
     Cấu trúc Playlist mới trong Player để overlay nút đóng playlist lên trên playlist:
+    // DOM structure in order to overlay close btn over embed playlist
 
-    <div class="embed-playlist"> -> position: absolute; chiếm trọn player
-      <div> -> position: relative; để cái nút overlay lên trên cùng
+    <div class="embed-playlist"> -> position: absolute -> chiếm trọn ô chứa Plyr | took over Plyr's container
+      <div> -> position: relative -> để cái nút đóng playlist hiện trên cùng | For overlaying close btn over embed playlist 
         <ul></ul> -> position: relative
-        <div>Nút đóng playlist</div> -> position: absolute; góc trên bên phải
+        <div>Nút đóng playlist | Hide embed playlist btn</div> -> position: absolute -> góc trên bên phải | sitting at top right corner of the embed playlist
       </div>
     </div>
 
     */
-    KHPlayer._insertBefore(
-      UKS + ' .plyr>.plyr__control',
-      KHPlayer.htmlToElement(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}' style='opacity: 0'><div></div></div>`)
+    this.insertBefore(
+      khpCtn.querySelector('.plyr>.plyr__control'),
+      this.string2Node(`<div class='EmbedKHPPlaylist hidden' key='${uniqueKey}'><div></div></div>`)
     );
-    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(d.querySelector(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true));
+    this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(this.s(`.KHPPlaylistContainer[key='${uniqueKey}']`).cloneNode(true));
 
-    // Nút ẩn Playlist
-    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(KHPlayer.htmlToElement(`<div class="closeEmbed">
+    // Nút ẩn/hiện embed playlist ở thanh điều khiển của Plyr
+    // Toggle embed playlist btn in Plyr's control bar
+    this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']>div`).appendChild(this.string2Node(`<div class="closeEmbed">
     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="window-close" class="svg-inline--fa fa-window-close fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-83.6 290.5c4.8 4.8 4.8 12.6 0 17.4l-40.5 40.5c-4.8 4.8-12.6 4.8-17.4 0L256 313.3l-66.5 67.1c-4.8 4.8-12.6 4.8-17.4 0l-40.5-40.5c-4.8-4.8-4.8-12.6 0-17.4l67.1-66.5-67.1-66.5c-4.8-4.8-4.8-12.6 0-17.4l40.5-40.5c4.8-4.8 12.6-4.8 17.4 0l66.5 67.1 66.5-67.1c4.8-4.8 12.6-4.8 17.4 0l40.5 40.5c4.8 4.8 4.8 12.6 0 17.4L313.3 256l67.1 66.5z"></path></svg></div>`));
-    d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']>div>.KHPPlaylistContainer`).removeAttribute("class");
-    //#endregion
-
-    //#region Tự động LƯU TRẠNG THÁI fullscreen/exitfullscreen để lát nữa chuyển tập còn biết mà auto full hay không
-    // Source: https://www.w3schools.com/jsref/prop_win_localstorage.asp
-    KHPlayer.plyr[uniqueKey][0].on("enterfullscreen", event => {
-      localStorage.setItem("IsFullScreen_" + uniqueKey, "yes");
-    });
-    KHPlayer.plyr[uniqueKey][0].on("exitfullscreen", event => {
-      localStorage.removeItem("IsFullScreen_" + uniqueKey);
-    });
+    this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']>div>.KHPPlaylistContainer`).classList.remove("KHPPlaylistContainer");
 
     // Event đóng embed playlist
-    d.querySelector(UKS + " .plyr__video-wrapper").addEventListener("click", () => {
+    // Event close embed playlist
+    khpCtn.querySelector(" .plyr__video-wrapper").addEventListener("click", () => {
       this.toggleEmbedPlayllist(uniqueKey, true);
     });
-    d.querySelector(UKS + " .closeEmbed").addEventListener("click", () => {
+    khpCtn.querySelector(".closeEmbed").addEventListener("click", () => {
       this.toggleEmbedPlayllist(uniqueKey, true);
     });
-
-    let speedSelectCtn = document.querySelector(`.plyr button[data-plyr="speed"]`).parentNode;
-    speedSelectCtn.style.maxHeight = "110px";
-    speedSelectCtn.style.overflow = "auto";
+    // #endregion
   },
-  toggleEmbedPlayllist(uniqueKey, hideOnly) {
-    let d = document,
-      elem = d.querySelector(`.EmbedKHPPlaylist[key='${uniqueKey}']`),
-      showPL = () => {
-        elem.classList.remove("hidden");
-        elem.style.opacity = "1";
-      },
-      hidePL = () => {
-        elem.classList.add("hidden");
-        elem.addEventListener("transitionend", () => {
-          elem.style.opacity = "0";
-        }, {
-          once: true
-        });
-      };
-    if (hideOnly) {
-      hidePL();
-    } else {
-      if (elem.classList.contains("hidden")) {
-        showPL();
-      } else {
-        hidePL();
-      }
-    }
-  },
+  // Function đổi tập. Thay vì loop epindex như trước, gây một vài vấn đề về tương thích, mình tách luôn ra thành function riêng.
 
-  // Function đổi tập. Thay vì loop epindex như trước, gây một vài vấn đề về tương thích, mình gán luôn function vào mỗi <li> trong DOM, kèm theo this
-  async changeEp(elem) {
-    let d = document,
-      // Lấy index của tập từ attribute "index" luôn
-      index = parseInt(elem.getAttribute('index'), 10),
+  async changeEp(elem, epIndex) {
+    let
       // Lấy uniqueKey từ <ul> đã nhồi nhét sẵn
       uniqueKey = await elem.parentNode.getAttribute("key"),
       // Viết tắt của uniqueKeySelector
-      UKS = "#" + uniqueKey;
+      khpCtn = this.id(uniqueKey);
 
     // -- Highlight <li> đang phát --
-    // Chọn toàn bộ <li> trong <ul> danh sách tập
-    select_all = d.querySelector(UKS + " .KHPPlaylistContainer").querySelectorAll("li");
-    let currLi = d.querySelector(`${UKS} .KHPPlaylistContainer li[index='${index}']`);
-    // Xoá highlight và indicator
-    select_all.forEach(function (e) {
-      e.removeAttribute("playing");
-      e.removeAttribute("style");
-    });
-    // Highlight tập vừa chọn
-    currLi.style.color = "yellow";
-    currLi.setAttribute("playing", "true");
+    // -- Highlight playing <li> --
+    for (let ep of khpCtn.querySelector(".KHPPlaylistContainer").querySelectorAll("li")) ep.removeAttribute("playing");
+    khpCtn.querySelectorAll(".KHPPlaylistContainer li")[epIndex].setAttribute("playing", "");
+    // #endregion
 
-    // Dữ liệu episode cần init
-    let currData = KHPlayer.data[uniqueKey][index];
+    // -- Dữ liệu episode cần init --
+    // -- Episode's data need to init --
+    let currData = this.data[uniqueKey][epIndex];
 
-    // Thường thì chỉ cần .source thôi là đủ (để chuyển tập), nhưng khi sử dụng nguồn m3u8, phải sử dụng API của HLS, source HLS mới chồng chéo lên source Plyr cũ. Cách giải quyết là destroy luôn cái cũ đi rồi init cái mới
-    KHPlayer.plyr[uniqueKey][0].destroy();
-    KHPlayer.plyr[uniqueKey] = await KHPlayer.initPlyr(uniqueKey, currData.previewThumbnails);
+    // Chuyển từ tập này sang tập khác qua API .source của Plyr thì được, nhưng nhảy qua nhảy lại giữa source HLS với Plyr thì không. Cách giải quyết đơn giản nhất là destroy() luôn cái Plyr player đang phát rồi init lại cái mới.
+    // It's perfectly fine when switching between episodes using Plyr's .source API, but not when HLS get involved. So the quickest/easiest way is to destroy() current Plyr and init a new one.
+    this.plyr[uniqueKey][0].destroy();
+    this.plyr[uniqueKey] = await this.initPlyr(uniqueKey, currData.previewThumbnails);
+    this.tweaks(uniqueKey);
 
-    let currVideoTag = d.querySelector(UKS + " video"),
-      currMediaType = currData.sources[0].type;
-
-    // Handle phần source đưa vào player. Nếu là M3U8 thì sử dụng HLS để thêm source, đồng thời thêm captions (nếu có)
-    if (currMediaType.toUpperCase() === "M3U8") {
-      KHPlayer.m3u8(currVideoTag, currData.sources[0].src);
-      if (currData.tracks != void 0) {
-        KHPlayer.addSubsForLibsPlayer(UKS + " video", currData.tracks[0]);
-      }
-      // Còn không thì dùng luôn API của Plyr, khỏi cần thêm cái addCaptions như trên
+    // Check dữ liệu xem dùng Plyr hay HLS để load dữ liệu.
+    // Check media type to determine using Plyr's API or HLS's one.
+    let currVideoTag = khpCtn.querySelector("video"),
+      currMedia = currData.sources[0];
+    if (currMedia.type.toUpperCase() === "M3U8") {
+      this.m3u8(currVideoTag, currMedia.src);
+      // Không như Plyr, HLS chỉ có tác dụng load file m3u8, phụ đề phải thêm thủ công.
+      // Unlike Plyr, HLS only load m3u8 file, captions must be manually adding.
+      if (currData.tracks)
+        for (let track of currData.tracks) this.addSubsForLibsPlayer(currVideoTag, track);
     } else {
-      KHPlayer.plyr[uniqueKey][0].source = await currData;
-      await KHPlayer.plyr[uniqueKey][0].play();
+      this.plyr[uniqueKey][0].source = currData;
+      this.plyr[uniqueKey][0].play();
     }
 
-    // Tự động next khi hết tập
-    // Đầu tiên đặt cái on("ended") (theo API của Plyr)
-    KHPlayer.plyr[uniqueKey][0].on('ended', function () {
-      // Lấy tập đang phát dựa vào cái indicator đã thêm ở trên > select tập tiếp theo > nếu tồn tại (!= void 0) thì click vào đó.
-      // Về vụ nextElementSubling hay nextSibling: https://stackoverflow.com/a/24226603
+    // -- Giới hạn chiều cao của các danh sách chọn phụ đề, độ phân giải, tốc độ --
+    // #region -- Limit Plyr's menu height inside Plyr's div --
+    let limitPlyrListHeight = type => {
+      let
+        selectPlyr = khpCtn.querySelector('.plyr'),
+        typeSelect = selectPlyr.querySelector(`button[data-plyr="${type}"]`);
+      if (typeSelect) {
+        let typeSelectCtn = typeSelect.parentNode;
+        let setMaxHeight = () => typeSelectCtn.style.maxHeight = `calc(${parseInt(window.getComputedStyle(selectPlyr).height,10)}px - 105px)`;
+        setMaxHeight();
+        window.addEventListener("resize", () => setMaxHeight());
+        typeSelectCtn.style.overflow = "auto";
+        typeSelectCtn.classList.add("custom_scrollbar");
+      }
+    };
+    let loopCheckMediaLoaded = setInterval(() => {
+      if (khpCtn.querySelector(".plyr video").readyState === 4) {
+        for (let item of ["language", "speed", "quality"]) limitPlyrListHeight(item);
+        clearInterval(loopCheckMediaLoaded);
+      }
+    }, 500);
+    //#endregion
+
+    // -- Tự động next khi hết tập --
+    // #region -- Autoplay next episode -- 
+    this.plyr[uniqueKey][0].on('ended', function () {
+      // nextElementSubling/nextSibling: https://stackoverflow.com/a/24226603
       let current_episode = KHPlayer.selectCurrEp(uniqueKey),
         next_episode = current_episode.nextElementSibling;
-      if (next_episode != void 0) {
-        // Source: https://www.w3schools.com/jsref/met_html_click.asp
-        next_episode.click();
-      }
+      // Source: https://www.w3schools.com/jsref/met_html_click.asp
+      if (next_episode) next_episode.click();
     });
+    // #endregion
 
-    if (localStorage.getItem("IsFullScreen_" + uniqueKey) === "yes") {
-      let loopCheckMediaLoaded = setInterval(() => {
-        // Giải thích sơ sơ nó là như thế này: hàm newValue khi được nhận dữ liệu nó sẽ chạy hàm set, ví dụ như ở dưới. Còn khi được request dữ liệu thì nó chạy hàm get, ví dụ console.log(watchVar.newValue). Cho nên trong trường hợp dưới đây, phần get newValue hoàn toàn thừa thãi bởi mình chỉ tận dụng cái tính năng set của nó để "trông" cái <video> trên DOM khi nào load xong media thì fullscreen. Có thể trong tương lai mình lại tận dụng được hàm get nên cứ để đấy, đồng thời cho cái jshint đỡ phải gào mồm lên đòi có hàm get :))
-        // Source: https://viblo.asia/p/getter-va-setter-trong-javascript-3P0lPOX4Zox
-        let watchVar = {
-          state: void 0,
-          get newValue() {
-            return this.state;
-          },
-          set newValue(newValue) {
-            this.state = newValue;
-            if (this.state === 4) {
-              KHPlayer.togglePlayerFullScreen(uniqueKey);
-              clearInterval(loopCheckMediaLoaded);
-            }
-          }
-        };
-        watchVar.newValue = d.querySelector(UKS + " .plyr video").readyState;
-      }, 100);
-    }
-    // Lưu thời gian video đang xem mỗi 1 giây vào localStorage
-    // Đầu tiên tạo interval rỗng -> clear đi -> tạo lại cái mới, tránh dẫn đến việc nhiều cái setInterval khác nhau
+    // #region -- Lưu thời gian video đang xem mỗi 1 giây vào localStorage --
+    // Tạo interval rỗng -> clear đi -> tạo lại cái mới, tránh dẫn đến việc nhiều cái setInterval khác nhau mỗi khi đổi tập.
+    // Create empty interval -> clear -> create new one to avoid duplicate interval when switching episodes.
+    let historyPlayingIndicator = this.data[uniqueKey][this.data[uniqueKey].length - 1];
     let saveCurrTimeEp = setInterval(function () {}, 1000);
     clearInterval(saveCurrTimeEp);
     saveCurrTimeEp = setInterval(() => {
-      let watchVideoState = {
-        state: void 0,
-        get newValue() {
-          return this.state;
-        },
-        set newValue(val) {
-          this.state = val;
-          if (this.state === 4) {
-            let currentPlayingTime = Math.round(KHPlayer.plyr[uniqueKey][0].currentTime);
-            localStorage.setItem("playing_" + uniqueKey, JSON.stringify({
-              epIndex: index,
-              time: currentPlayingTime
-            }));
-          }
-        },
-      };
-      watchVideoState.newValue = d.querySelector(UKS + " .plyr video").readyState;
+      if (khpCtn.querySelector(".plyr video").readyState === 4)
+        localStorage.setItem("khplayer_playing_" + historyPlayingIndicator, JSON.stringify({
+          epIndex: epIndex,
+          time: Math.round(KHPlayer.plyr[uniqueKey][0].currentTime)
+        }));
     }, 1000);
-    KHPlayer.tweaks(uniqueKey);
+    //#endregion
+
+    let adjustSpeed = () => {
+      // console.log(this.plyr[uniqueKey][0].speed);
+      if (event.shiftKey && event.keyCode == "190") this.plyr[uniqueKey][0].speed += 0.5;
+      if (event.shiftKey && event.keyCode == "188") this.plyr[uniqueKey][0].speed -= 0.5;
+    };
+    khpCtn.removeEventListener('keydown', adjustSpeed);
+    khpCtn.addEventListener('keydown', adjustSpeed);
+
   },
-  insertAfter(place, data, convertDataToElem = false) {
+  toggleEmbedPlayllist(uniqueKey, hideOnly = false) {
+    let elem = this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']`);
+    if (hideOnly) {
+      elem.classList.add("hidden");
+    } else {
+      if (elem.classList.contains("hidden")) {
+        elem.classList.remove("hidden");
+      } else {
+        elem.classList.add("hidden");
+      }
+    }
+  },
+  insertAfter(elem, data, string2Elem = false) {
     // Source: https://github.com/nefe/You-Dont-Need-jQuery#3.7
-    let elem = document.querySelector(place);
-    if (convertDataToElem === false) {
-      elem.parentNode.insertBefore(data, elem.nextSibling);
-    } else if (convertDataToElem === true) {
-      elem.parentNode.insertBefore(KHPlayer.htmlToElement(data), elem.nextSibling);
-    }
+    if (!string2Elem) elem.parentNode.insertBefore(data, elem.nextSibling);
+    if (string2Elem) elem.parentNode.insertBefore(this.string2Node(data), elem.nextSibling);
   },
-  // Tránh confict với insertBefore của javascript
-  _insertBefore(place, data, convertDataToElem = false) {
-    let elem = document.querySelector(place);
-    if (convertDataToElem === false) {
-      elem.parentNode.insertBefore(data, elem);
-    } else if (convertDataToElem === true) {
-      elem.parentNode.insertBefore(KHPlayer.htmlToElement(data), elem);
-    }
+  insertBefore(elem, data, string2Elem = false) {
+    if (string2Elem) elem.parentNode.insertBefore(this.string2Node(data), elem);
+    if (!string2Elem) elem.parentNode.insertBefore(data, elem);
   },
   selectCurrEp(uniqueKey) {
-    return document.querySelector(`#${uniqueKey} .KHPPlaylistContainer li[playing='true']`);
+    return this.s(`#${uniqueKey} .KHPPlaylistContainer li[playing]`);
   },
   navigateEp(elem, nextOrPrev) {
     let uniqueKey = elem.parentNode.parentNode.parentNode.getAttribute("id"),
-      currEp = KHPlayer.selectCurrEp(uniqueKey);
-    if (currEp === null) document.querySelector("#" + uniqueKey + " .KHPPlaylistContainer li[index='0']").click();
-    if (currEp !== null) {
+      currEp = this.selectCurrEp(uniqueKey);
+    if (!currEp) this.d.querySelectorAll("#" + uniqueKey + " .KHPPlaylistContainer li")[0].click();
+    if (currEp) {
       let
         nextEp = currEp.nextElementSibling,
         prevEp = currEp.previousElementSibling;
       if (nextOrPrev === "next") {
-        if (nextEp !== null) nextEp.click();
+        if (nextEp) nextEp.click();
       }
       if (nextOrPrev === "prev") {
-        if (prevEp === null) {
-          currEp.click();
-        } else {
-          prevEp.click();
-        }
+        if (!prevEp) currEp.click();
+        if (prevEp) prevEp.click();
       }
     }
   },
-  togglePlayerFullScreen(uniqueKey) {
-    document.querySelector(`#${uniqueKey} button[data-plyr="fullscreen"]`).click();
-  },
-  acceptContinue(uniqueKey, episode, time) {
-    document.querySelector(`#${uniqueKey} .KHPPlaylistContainer li[index="${episode}"]`).click();
+  acceptContinue(uniqueKey, epIndex, time) {
+    let khpCtn = this.id(uniqueKey);
+    khpCtn.querySelectorAll(`.KHPPlaylistContainer li`)[epIndex].click();
     var tempLoop = setInterval(() => {
-      let checkMediaStatus = {
-        status: void 0,
-        get newValue() {
-          return this.status;
-        },
-        set newValue(value) {
-          this.status = value;
-          if (this.status === 4) {
-            KHPlayer.plyr[uniqueKey][0].currentTime = time;
-            clearInterval(tempLoop);
-          }
-        }
-      };
-      checkMediaStatus.newValue = document.querySelector(`#${uniqueKey} .plyr video`).readyState;
+      if (khpCtn.querySelector(`.plyr video`).readyState === 4) {
+        KHPlayer.plyr[uniqueKey][0].currentTime = time;
+        clearInterval(tempLoop);
+      }
     }, 100);
   },
-  // Source: http://youmightnotneedjquery.com/
+  rejectContinue(elem) {
+    elem.parentNode.parentNode.parentNode.classList.add("hideAlert");
+    elem.parentNode.parentNode.parentNode.parentNode.querySelector('.plyr__controls').removeAttribute('hidden');
+  },
   m3u8(elem, source) {
     if (Hls.isSupported()) {
-      var hls = new Hls();
+      let hls = new Hls();
       hls.loadSource(source);
       hls.attachMedia(elem);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        elem.play();
-      });
+      hls.on(Hls.Events.MANIFEST_PARSED, () => elem.play());
+    } else {
+      console.log(new Error('HLS.js is required for playback M3U8 media'));
     }
   },
+  // Source: http://youmightnotneedjquery.com/
   getJSON(url) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(resolve => {
       var request = new XMLHttpRequest();
       request.open('GET', url, true);
       request.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status >= 200 && this.status < 400) {
-            var data = JSON.parse(this.responseText);
-            resolve(data);
+            resolve(JSON.parse(this.responseText));
           } else {
-            reject(new Error("Double check JSON path/url"));
+            resolve(void 0);
           }
         }
       };
@@ -406,26 +368,23 @@ const KHPlayer = {
     });
   },
   addSubsForLibsPlayer(elem, data) {
-    let tempSub = `<track kind="subtitles" label="${data.label}" srclang="${data.srclang}" src="${data.src}">`;
-    document.querySelector(elem).appendChild(KHPlayer.htmlToElement(tempSub));
+    elem.appendChild(this.string2Node(`<track kind="subtitles" label="${data.label}" srclang="${data.srclang}" src="${data.src}">`));
   },
   // Source: https://stackoverflow.com/a/35385518
-  htmlToElement(html) {
-    var template = document.createElement('template');
+  string2Node(html) {
+    var template = this.d.createElement('template');
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
     return template.content.firstChild;
   },
   // Source: https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript
-  jsonPaths: JSON.parse(document.currentScript.getAttribute("jsonPath")),
-  // Chứa dữ liệu từ file json mà người dùng load
+  customConfigPath: document.currentScript.getAttribute("config"),
+  // All videos' jsons' data
   data: {},
-  // Các <video> đẻ plyr tương tác
+  // for Plyr to interact
   plyr: {}
 };
-KHPlayer.jsonPaths.forEach(function (e) {
-  // let configData = document.currentScript.getAttribute("config");
-  // if (configData) {} else {
+document.addEventListener("DOMContentLoaded", async () => {
   let defaultConfig = {
     defaultQuality: 1080,
     seekTime: 5,
@@ -441,7 +400,6 @@ KHPlayer.jsonPaths.forEach(function (e) {
     },
     defaultPoster: "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg",
     blankVideo: "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/blank.mp4",
-    // Vietnamese
     i18n: {
       restart: 'Khởi động lại',
       rewind: 'Tua trước {seektime}s',
@@ -490,28 +448,27 @@ KHPlayer.jsonPaths.forEach(function (e) {
       previousEpisode: 'Tập trước',
       toggleEmbedPlayllist: 'Danh sách tập',
       continueWatchingConfirm: {
-        'yes': 'Có',
-        'no': 'Không',
-        '_1': 'Bạn đang xem<br>',
-        '_2': 'tại',
-        '_3': 'Tiếp tục chứ?'
+        yes: 'Có',
+        no: 'Không',
+        continueWatching: 'Tiếp tục',
+        at: 'tại',
+        confirm: ''
       }
     },
-    // English
-    // _i18n: {
-    //   nextEpisode: 'Next episode',
-    //   previousEpisode: 'Previous episode',
-    //   toggleEmbedPlayllist: 'Toggle playlist',
-    //   continueWatchingConfirm: {
-    //     'yes': 'Yes',
-    //     'no': 'No',
-    //     '_1': 'You were watching',
-    //     '_2': 'at',
-    //     '_3': 'Want to continue?'
-    //   }
-    // },
   };
-  KHPlayer.configurator = defaultConfig;
-  // }
-  KHPlayer.init(e);
+  let configURL = KHPlayer.customConfigPath,
+    customConfigData;
+  if (configURL) customConfigData = await KHPlayer.getJSON(configURL) || {};
+  let configData = {
+    ...defaultConfig,
+    ...customConfigData
+  };
+  KHPlayer.configurator = configData;
+  for await (let elem of document.querySelectorAll('khplayer-container')) {
+    // Assign uniqueKey to avoid conflic between multiple khplayer-container when changeEp() or cloning playlist into embed playlist
+    // Gán uniqueKey để tránh xung đột với các khplayer-container khác khi chuyển tập hay clone playlist lên embed playlist
+    let uniqueKey = KHPlayer.randomString();
+    elem.setAttribute("id", uniqueKey);
+    KHPlayer.init(uniqueKey);
+  }
 });

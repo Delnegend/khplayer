@@ -1,15 +1,16 @@
-$mainColor: #12dd12;
 $transition: .4s ease-out;
 $lineHeight: 40px;
-$btnHoverRad: 5px;
-$green: #12dd12;
+$btnHoverRad: 8px;
+$box-shadow: 0 2px 10px -7px #000;
 
+// #region Mixins
 @mixin transition {
   transition-duration: .3s;
   transition-timing-function: ease-out;
 }
 
 @mixin hoverShadow {
+  box-shadow: $box-shadow;
   @include transition;
 
   &:hover {
@@ -38,146 +39,217 @@ $green: #12dd12;
   }
 }
 
-.KHPPlaylistContainer,
-div.plyr {
-  font-family: "Noto Sans", Segoe UI, Helvetica, sans-serif;
-}
+// #endregion
 
-.KHPPlaylistContainer {
-  border-radius: 0 0 5px 5px;
-  max-height: 15rem;
-  margin-top: 0px;
-  box-shadow: 0 2px 10px -7px #000;
-  transition: box-shadow $transition;
+khplayer-container {
+  // Màu chủ đạo
+  // Theme color
+  --main-color: #c2185b;
+  // Hiệu ứng nền (menu của Plyr, cửa sổ xác nhận xem tiếp, embed playlist)
+  // Background transparent effect (Plyr's menu, confirm continue watching window, embed playlist)
+  --bg-tp-fx: blur(5px);
+  // Main font
+  // Phông chữ chủ đạo
+  --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  // Màu nền nút xác nhận xem tiếp (XNXT)
+  // Bg color of confirm continue watching (CCW) button
+  --confirm-btn-bg: var(--main-color);
+  // Màu chữ nút XNXT
+  // Text color of CCW button
+  --confirm-btn-text: white;
+  // Màu nền hộp thông báo XNXT
+  // Bg color of CCW alertbox
+  --confirm-box-bg: red;
+  // Màu chữ của hộp thông báo XNXT
+  // Text color of CCW alertbox
+  --confirm-box-text: yellow;
+  // Màu nền cửa sổ XNXT
+  // Bg color of CCW window
+  --bg-detect-history: rgba(0, 0, 0, .6);
+  // Hiệu ứng nền cửa sổ XNXT
+  // Backdrop-filter of CCW window
+  --bdft-detect-history: blur(var(--blur-strength));
 
-  &:hover {
-    box-shadow: 0 2px 10px -5px #000;
-  }
-}
 
-.EmbedKHPPlaylist {
-  margin-top: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  max-width: 100%;
-  width: 400px;
-  z-index: 3;
+  // Màu nền playlist
+  --list-bg: rgba(0, 0, 0, 0.8);
+  // Màu nền nút chọn tập
+  --ep-bg: rgba(255, 255, 255, 0.1);
+  // Màu chữ nút chọn tập
+  --ep-text: rgba(255, 255, 255, 0.6);
+  // Màu chữ tập đang phát
+  --ep-active: yellow;
+  // Hiệu ứng nền embed playlist
+  --bdft-embedplaylist: var(--bg-tp-fx);
+
+  // Màu thanh cuộn
+  --scrollbar-color: var(--main-color);
+  // Hiệu ứng nền menu plyr
+  --bdft-menu: var(--bg-tp-fx);
+
   overflow: hidden;
-  transition: transform $transition;
-  backdrop-filter: blur(5px);
+  /* KHÔNG XOÁ DÒNG NÀY | DO NOT REMOVE THIS LINE */
 
-  &.hidden {
-    transition: transform $transition;
-    transform: translateX(-100%);
+  * {
+    font-family: var(--font) !important;
   }
 
-  &>div {
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      position: relative;
-
+  // #region scrollbar
+  .custom_scrollbar {
+    &::-webkit-scrollbar {
+      width: 6px;
     }
 
-    .closeEmbed {
-      $size: 40px;
-      position: absolute;
-      right: 24px;
-      top: 10px;
-      width: $size;
-      height: $size;
-      z-index: 4;
-      color: $mainColor;
-      cursor: pointer;
-      // box-shadow: ;
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      background: #fff;
+      background: var(--scrollbar-color);
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -webkit-border-radius: 10px;
     }
   }
-}
 
-.KHPPlaylistContainer,
-.EmbedKHPPlaylist>div>ul {
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: .2rem;
-  overflow: auto;
-  list-style-type: none;
-  margin: 0;
+  // #endregion
 
-  li {
-    padding: .5rem;
-    margin: .4rem;
-    color: rgba(255, 255, 255, 0.6);
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    user-select: none;
-    transition-property: color, background-color;
-    transition-duration: .2s;
+  .KHPPlaylistContainer {
+    border-radius: 0 0 5px 5px;
+    max-height: 15rem;
+    margin-top: 0px;
+    transition: box-shadow $transition;
+    @include hoverShadow;
 
     &:hover {
-      color: $mainColor;
-      opacity: 1;
-      background-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 10px -5px #000;
     }
   }
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    background: #fff;
-    background: $mainColor;
-    width: 6px !important;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -webkit-border-radius: 10px;
-  }
-}
-
-.plyr {
-  --plyr-color-main: #12dd12;
-  --plyr-font-smoothing: true;
-  // --plyr-font-size-small: var(--plyr-font-size-base);
-  // --plyr-font-size-base: var(--plyr-font-size-large);
-  --plyr-font-size-large: 25px;
-  --plyr-font-size-xlarge: 30px;
-
-  .plyr__caption {
-    line-height: 100%;
-  }
-
-  border-radius: 5px 5px 0 0;
-
-  .plyr__video-wrapper,
-  .plyr__captions {
-    z-index: 2;
-  }
-
-  .plyr__controls {
+  .EmbedKHPPlaylist {
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    max-width: 100%;
+    width: 400px;
     z-index: 3;
+    overflow: hidden;
+    transition: transform $transition;
+    backdrop-filter: var(--bdft-embedplaylist);
 
-    .customBtn {
+    &.hidden {
+      transition: transform $transition;
+      transform: translateX(-100%);
+    }
+
+    &>div {
       position: relative;
-      bottom: 0;
+      width: 100%;
+      height: 100%;
 
-      svg {
-        transform: scale(1.15);
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        position: relative;
+
+      }
+
+      .closeEmbed {
+        $size: 40px;
+        position: absolute;
+        right: 24px;
+        top: 10px;
+        width: $size;
+        height: $size;
+        z-index: 4;
+        color: var(--main-color);
+        cursor: pointer;
       }
     }
+  }
+
+  .KHPPlaylistContainer,
+  .EmbedKHPPlaylist>div>ul {
+    background: var(--list-bg);
+    padding: .2rem;
+    overflow: auto;
+    list-style-type: none;
+    margin: 0;
+
+    li {
+      padding: .5rem;
+      margin: .4rem;
+      color: var(--ep-text);
+      background-color: var(--ep-bg);
+      border-radius: 4px;
+      user-select: none;
+      transition-property: color, background-color;
+      transition-duration: .2s;
+
+      &:hover {
+        color: var(--main-color);
+        opacity: 1;
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      &[playing] {
+        color: var(--ep-active);
+      }
+    }
+  }
+
+  .plyr {
+    --plyr-color-main: var(--main-color);
+    --plyr-font-family: var(--font);
+    --plyr-font-smoothing: true;
+    --plyr-font-size-large: 25px;
+    --plyr-font-size-xlarge: 30px;
+    --plyr-menu-background: rgba(0, 0, 0, .6);
+    --plyr-menu-color: white;
+    
+    border-radius: 5px 5px 0 0;
+
+    .plyr__menu__container {
+      backdrop-filter: var(--bdft-menu);
+    }
+
+    &>.plyr__control[data-plyr="play"] {
+      box-shadow: 0 2px 10px -2px #000;
+      backdrop-filter: blur(var(--blur-strength));
+    }
+
+    .plyr__caption {
+      line-height: 100%;
+    }
+
+    .plyr__video-wrapper,
+    .plyr__captions {
+      z-index: 2;
+    }
+
+    .plyr__controls {
+      z-index: 3;
+
+      .customBtn {
+        position: relative;
+        bottom: 0;
+
+        svg {
+          transform: scale(1.15);
+        }
+      }
+    }
+
+
   }
 
   .systemDetectHistory {
@@ -189,16 +261,20 @@ div.plyr {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    backdrop-filter: var(--bdft-detect-history);
+    background: var(--bg-detect-history);
+    @include disableSelect;
 
     .text {
       max-width: 80%;
       width: fit-content;
       max-height: 100px;
-      background-color: red;
-      color: yellow;
-      border-radius: 8px;
+      background-color: var(--confirm-box-bg);
+      color: var(--confirm-box-text);
+      border-radius: $btnHoverRad;
       padding: .5em 1em;
       text-align: center;
+      box-shadow: $box-shadow;
     }
 
     .actions {
@@ -207,20 +283,21 @@ div.plyr {
       flex-direction: row;
 
       .confirmBtn {
-        border-radius: $btnHoverRad + 2px;
+        border-radius: $btnHoverRad;
         display: inline-block;
-        color: white;
-        background: $green;
+        color: var(--confirm-btn-text);
+        background: var(--confirm-btn-bg);
         height: $lineHeight;
         padding: 3px;
         cursor: pointer;
-        transition-property: transform;
+        transition-property: transform, box-shadow;
         overflow: hidden;
         margin: 5px;
-        @include hoverZoom(1.1);
-        @include disableSelect;
-        @include transition;
         text-align: center;
+
+        @include hoverZoom(1.1);
+        @include transition;
+        @include hoverShadow;
 
         &:active {
           transform: scale(1);
@@ -248,16 +325,16 @@ div.plyr {
       transform: translateY(-100%);
     }
   }
-}
 
-@media screen and (max-width: 500px) {
-  .plyr {
-    .plyr__controls {
-
-      .nextEpBtn,
-      .prevEpBtn,
-      button[data-plyr="pip"] {
-        display: none;
+  @media screen and (max-width: 500px) {
+    .plyr {
+      .plyr__controls {
+        .nextEpBtn,
+        .prevEpBtn,
+        button[data-plyr="pip"],
+        .plyr__volume {
+          display: none;
+        }
       }
     }
   }
