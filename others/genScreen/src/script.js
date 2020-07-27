@@ -7,6 +7,15 @@
 const KHPGen = {
   aniSpeed: "fast",
   minus_icon: `➖`,
+  randomString(length = 20) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return "_" + result + btoa(new Date().getTime()).replace(/=/g, "");
+  },
   aniReplaceHTML(selector, content, duration) {
     $(selector).fadeOut(duration, () => $(selector).html(content).fadeIn(duration));
   },
@@ -26,27 +35,26 @@ const KHPGen = {
       .next().slideDown(KHPGen.aniSpeed);
   },
   REMOVE_EPISODE(elem) {
-    let a = $(elem).parent(".addRemoveEpBtn").parent(".episode_container");
-    a.slideUp(KHPGen.aniSpeed, () => a.remove());
+    $(elem.parentNode.parentNode).slideUp(KHPGen.aniSpeed, () => a.remove());
   },
   ADD_SOURCE(elem) {
     KHPGen.aniAppendTo(
-      $("#temp_zone #singleSrcCtn").clone(),
-      $(elem).parent("#singleSrcCtn").parent("#ALL_SRCS_CTN"),
+      $("#temp_zone .singleSrcCtn").clone(),
+      elem.parentNode.parentNode,
       KHPGen.aniSpeed);
   },
   REMOVE_SOURCE(elem) {
-    let a = $(elem).parent('#singleSrcCtn');
-    a.slideUp(KHPGen.aniSpeed, () => a.remove());
+    $(elem.parentNode).slideUp(KHPGen.aniSpeed, () => a.remove());
   },
   ADD_CAPTIONS(elem) {
-    let a = $("#temp_zone #singleCapCtn").clone(),
-      b = $(elem).parent("#singleCapCtn").parent("#ALL_CAPS_CTN");
-    KHPGen.aniAppendTo(a, b, KHPGen.aniSpeed);
+    KHPGen.aniAppendTo(
+      $("#temp_zone .singleCapCtn").clone(),
+      $(elem.parentNode.parentNode),
+      KHPGen.aniSpeed
+    );
   },
   REMOVE_CAPTIONS(elem) {
-    let a = $(elem).parent('#singleCapCtn');
-    a.slideUp(KHPGen.aniSpeed, () => a.remove());
+    $(elem.parentNode).slideUp(KHPGen.aniSpeed, () => $(elem.parentNode).remove());
   },
   SELECT_TYPE(elem) {
     let a = $(elem)
@@ -81,105 +89,76 @@ const KHPGen = {
   completeResult(elem) {
     $('#masterPosterContainer, .episode_container').slideUp(KHPGen.aniSpeed);
     $('#addOrCreateNewCtn').slideDown(KHPGen.aniSpeed);
-    $(elem).html("Quay lại chỉnh sửa");
+    elem.querySelectorAll('i-18n')[0].setAttribute("hidden", "");
+    elem.querySelectorAll('i-18n')[1].removeAttribute("hidden");
     $(elem).attr('onclick', "KHPGen.editResult(this)");
   },
   editResult(elem) {
     $('#addOrCreateNewCtn, #createNewPPCtn, #existedPPCtn').slideUp(KHPGen.aniSpeed);
     $('#masterPosterContainer, .episode_container').slideDown(KHPGen.aniSpeed);
-    $(elem).html("Hoàn thành");
+    elem.querySelectorAll('i-18n')[0].removeAttribute("hidden");
+    elem.querySelectorAll('i-18n')[1].setAttribute("hidden", "");
     $(elem).attr('onclick', "KHPGen.completeResult(this)");
   },
-  generateCodeFromUserInput() {
+  generateCodeFromUserInput(addPosterAndPlayingIndicator = true) {
     // Ẩn khung export
     $("#outputPanel").slideUp(KHPGen.aniSpeed);
 
     // Array chứa data thô toàn bộ input từ người dùng
-    const RAW_DATA = [];
-
-    // Lấy url của poster tổng, để ngoài này thay vì trong vòng lặp dưới để tránh việc #masterPosterInput bị fetch nhiều lần, ảnh hưởng tới hiệu năng
-    let finalMasPoster = $("#masterPosterInput").val() || "";
-    //   finalMasPoster;
-    // if (inputMasPoster) {
-    //   finalMasPoster = inputMasPoster;
-    // } else {
-    //   finalMasPoster = "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg";
-    // }
+    let RAW_DATA = [];
 
     // Xử lý từng episode
-    $("#userInteractCtn .episode_container").each((index, value) => {
-      if ($(value).find(".title").val()) {
-        let
-          // Object tạm thời để đẩy dần dữ liệu vào, cuối cùng đẩy vào RAW_DATA
-          processingEpElem = {},
-          // checkSubsExist: True khi ô input tên sub được điền, False khi không có
-          checkSubsExist = $(value).find("#ALL_CAPS_CTN").find("#singleCapCtn").find(".captionFullName").val(),
-          // Lấy url của poster con của từng tập
-          inputEpPoster = $(value).find(".essentials").find(".poster").val();
+    for (let value of document.querySelectorAll("#userInteractCtn .episode_container")) {
+      if (value.querySelector('.title').value) {
+        // Object tạm thời để đẩy dần dữ liệu vào, cuối cùng đẩy vào RAW_DATA
+        let processingEpElem = {};
 
         processingEpElem.type = "video";
-        processingEpElem.title = $(value).find(".title").val();
+        processingEpElem.title = value.querySelector(".title").value;
         processingEpElem.sources = [];
 
-        let preThumbSrc = $(value).find(".previewThumbnail").val();
+        // Sprite preview thumbnail
+        let preThumbSrc = value.querySelector(".previewThumbnail").value;
         if (preThumbSrc) processingEpElem.previewThumbnails = {
           src: preThumbSrc
         };
+
         // Xử lý từng source
-        $(value).find("#ALL_SRCS_CTN").find("#singleSrcCtn").each((index, value) => {
+        for (let source of value.querySelectorAll("#ALL_SRCS_CTN .singleSrcCtn")) {
           let currentMediaSrc = {};
 
-          // URL
-          let inputSrcType = $(value).find("#typeSelectorContainer").find("#typeSelectorBtn").attr("selected-type");
-          currentMediaSrc.src = $(value).find(".mediaSrc").val();
-
-          // Type
-          if (inputSrcType != 'undefined') {
-            currentMediaSrc.type = inputSrcType;
-          } else {
-            currentMediaSrc.type = "video/mp4";
-          }
+          // URL + type
+          currentMediaSrc.src = source.querySelector(".mediaSrc").value;
+          currentMediaSrc.type = source.querySelector("#typeSelectorBtn").getAttribute("selected-type");
 
           // Quality
-          let a = $(value).find("#qualitySelectorContainer").find("#qualitySelectorBtn").attr("selected-res");
-          if (a != null) {
-            currentMediaSrc.size = parseInt(a);
-          } else {
-            currentMediaSrc.size = 1080;
-          }
+          currentMediaSrc.size = parseInt(source.querySelector("#qualitySelectorBtn").getAttribute("selected-res"));
 
           // Push lên processingEpElem.sources
           processingEpElem.sources.push(currentMediaSrc);
-        });
+        }
         // Xử lý từng phụ đề
-        if (checkSubsExist) {
-          processingEpElem.tracks = [];
-          $(value).find("#ALL_CAPS_CTN").find("#singleCapCtn").each((index, value) => {
+        for (let caption of value.querySelectorAll("#ALL_CAPS_CTN .singleCapCtn")) {
+          if (caption.querySelector(".captionFullName").value) {
             let processingCaption = {};
             processingCaption.kind = "subtitles";
-            processingCaption.label = $(value).find(".captionFullName").val();
-            processingCaption.srclang = $(value).find(".captionShortName").val();
-            processingCaption.src = $(value).find(".capionSrc").val();
+            processingCaption.label = caption.querySelector(".captionFullName").value;
+            processingCaption.srclang = caption.querySelector(".captionShortName").value;
+            processingCaption.src = caption.querySelector(".capionSrc").value;
             processingEpElem.tracks.push(processingCaption);
-          });
+          }
         }
-        // Phần poster
-        let finalEpPoster;
-        if (inputEpPoster) {
-          finalEpPoster = inputEpPoster;
-        } else {
-          finalEpPoster = finalMasPoster;
-        }
-        processingEpElem.poster = finalEpPoster;
 
         // Đẩy lên array
         RAW_DATA.push(processingEpElem);
       }
-    });
+    }
 
     // Đấy url poster tổng cũng như ID lên data
-    RAW_DATA.push(finalMasPoster);
-    RAW_DATA.push(UNIQUE_ID);
+    if (addPosterAndPlayingIndicator) {
+      RAW_DATA.push($("#masterPosterInput").val() || "");
+      RAW_DATA.push(UNIQUE_ID);
+    }
     return JSON.stringify(RAW_DATA);
   },
   copy2clip: new ClipboardJS(".copy2clip"),
@@ -187,19 +166,19 @@ const KHPGen = {
     // Type: https://getbootstrap.com/docs/4.0/components/alerts/
 
     // Tạo 1 id tạm thời cho container thông báo, mỗi 1 noti là 1 id riêng, tránh trùng lặp với noti trước nếu 2 cái overlap nhau
-    let tempID = `_${new Date().getTime()}`;
+    let tempID = KHPGen.randomString();
     // Tạo container chứa messageBox nếu chưa có
     if ($('.alertCtn')[0] === void 0) {
       $("body").append(`<div class="alertCtn"><div class="innerAlertCtn"></div></div>`);
     }
-    $('.innerAlertCtn').append(`<div class="alert" id="${tempID}" role="alert" style="display:none">${message}</div>`);
-    $(`#${tempID}`).slideDown("normal");
+    $('.innerAlertCtn').append(`<div class="alert" id="${tempID}" role="alert" display="none">${message}</div>`);
+    $("#" + tempID).slideDown("normal");
     setTimeout(() => {
-      $(`#${tempID}`).slideUp("normal", () => $(`#${tempID}`).remove());
+      $("#" + tempID).slideUp("normal", () => $("#" + tempID).remove());
     }, duration);
   },
 };
-var UNIQUE_ID = "KHP_" + Date.now();
+var UNIQUE_ID = "khplayer" + KHPGen.randomString();
 
 $("#qualitySelectorContainer .dropdown-item").attr("onclick", "KHPGen.SELECT_RES(this)");
 $("#typeSelectorContainer .dropdown-item").attr("onclick", "KHPGen.SELECT_TYPE(this)");
@@ -210,8 +189,8 @@ $("#phantomZoneCtn .episode_container")
   .appendTo("#userInteractCtn")
   .show();
 
-// Clone #singleSrcCtn từ template vào #temp_zone để xử lý
-$("#phantomZoneCtn #ALL_SRCS_CTN #singleSrcCtn")
+// Clone .singleSrcCtn từ template vào #temp_zone để xử lý
+$("#phantomZoneCtn #ALL_SRCS_CTN .singleSrcCtn")
   .clone()
   .appendTo("#phantomZoneCtn #temp_zone");
 
@@ -221,12 +200,12 @@ $("#temp_zone #addSourceBtn")
   .removeAttr("id")
   .html(KHPGen.minus_icon);
 
-// Clone #singleCapCtn từ template vào #temp_zone để xử lý
-$("#phantomZoneCtn #ALL_CAPS_CTN #singleCapCtn")
+// Clone .singleCapCtn từ template vào #temp_zone để xử lý
+$("#phantomZoneCtn #ALL_CAPS_CTN .singleCapCtn")
   .clone()
   .appendTo("#phantomZoneCtn #temp_zone");
 
-// addCaps -> removeCaps trong #singleCapCtn trong #temp_zone
+// addCaps -> removeCaps trong .singleCapCtn trong #temp_zone
 $("#temp_zone #addCaptionBtn")
   .attr("onclick", "KHPGen.REMOVE_CAPTIONS(this)")
   .removeAttr("id")
@@ -245,16 +224,35 @@ $(".editResult").hide();
 $("#downloadJSON").on("click", () => KHPGen.saveAsJSON(KHPGen.generateCodeFromUserInput()));
 
 $("#createNewPPActionBtn").on("click", () => {
-  $("#createNewPPCode>code").html(`&#x3C;div id=&#x22;${UNIQUE_ID}&#x22;&#x3E;&#x3C;/div&#x3E;`);
+  $("#createNewPPCode>code").html(`&#x3C;khplayer-container data=&#x22;${UNIQUE_ID}.json&#x22;&#x3E;&#x3C;/khplayer-container&#x3E;`);
   $("#existedPPCtn").slideUp(KHPGen.aniSpeed);
   $("#createNewPPCtn").slideDown(KHPGen.aniSpeed);
 });
 $("#existedPPActionBtn").on("click", () => {
-  $("#existedPPCtnCode>code").html(KHPGen.generateCodeFromUserInput(false));
+  let newData = KHPGen.generateCodeFromUserInput(false);
+  newData = newData.slice(1, newData.length - 3);
+  $("#existedPPCtnCode>code").html(newData);
   $("#createNewPPCtn").slideUp(KHPGen.aniSpeed);
   $("#existedPPCtn").slideDown(KHPGen.aniSpeed);
 });
 KHPGen.copy2clip.on("success", e => {
   e.clearSelection();
   KHPGen.messageBox("Đã copy vào clipboard!");
+});
+
+
+
+
+// i18n
+document.addEventListener("DOMContentLoaded", () => {
+  let params = new URLSearchParams(window.location.search),
+    language = params.get("lang");
+
+  if (language == "en") {
+    for (let elem of document.querySelectorAll("i-18n")) elem.innerHTML = elem.getAttribute("en");
+    for (let elem of document.querySelectorAll('*[ph-en]')) elem.setAttribute("placeholder", elem.getAttribute("ph-en"));
+  } else {
+    for (let elem of document.querySelectorAll("i-18n")) elem.innerHTML = elem.getAttribute("vi");
+    for (let elem of document.querySelectorAll('*[ph-vi]')) elem.setAttribute("placeholder", elem.getAttribute("ph-vi"));
+  }
 });

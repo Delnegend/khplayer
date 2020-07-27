@@ -1,38 +1,21 @@
 // jshint esversion: 8
 const d = document;
 const genCode = {
-  copyToClipboarb(elem) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val()($(elem).html()).select();
-    d.execCommand("copy");
-    $temp.remove();
-  },
   changeResult() {
     let
-      tempData = [],
       parentSelect = '.container ',
-      filename_ = $(parentSelect + '#filename'),
-      filename = filename_.val() || filename_.attr('placeholder'),
-      fps_ = $(parentSelect + '#fps'),
-      fps = fps_.val() || fps_.attr('placeholder'),
-      hour_ = $(parentSelect + '#hour'),
-      hour = hour_.val() || hour_.attr('placeholder'),
-      minute_ = $(parentSelect + '#minute'),
-      minute = minute_.val() || minute_.attr('placeholder'),
-      second_ = $(parentSelect + '#second'),
-      second = second_.val() || second_.attr('placeholder'),
-      width_ = $(parentSelect + '#width'),
-      width = width_.val() || width_.attr('placeholder'),
-      height_ = $(parentSelect + '#height'),
-      height = height_.val() || height_.attr('placeholder'),
-      interval_ = $(parentSelect + '#interval'),
-      interval = interval_.val() || interval_.attr('placeholder'),
-      thumbUrl_ = $(parentSelect + "#thumbUrl"),
-      thumbUrl = thumbUrl_.val() || thumbUrl_.attr('placeholder');
+      filename = $(parentSelect + '#filename').val() || $(parentSelect + '#filename').attr('placeholder'),
+      fps = $(parentSelect + '#fps').val() || $(parentSelect + '#fps').attr('placeholder'),
+      hour = $(parentSelect + '#hour').val() || $(parentSelect + '#hour').attr('placeholder'),
+      minute = $(parentSelect + '#minute').val() || $(parentSelect + '#minute').attr('placeholder'),
+      second = $(parentSelect + '#second').val() || $(parentSelect + '#second').attr('placeholder'),
+      width = $(parentSelect + '#width').val() || $(parentSelect + '#width').attr('placeholder'),
+      height = $(parentSelect + '#height').val() || $(parentSelect + '#height').attr('placeholder'),
+      interval = $(parentSelect + '#interval').val() || $(parentSelect + '#interval').attr('placeholder'),
+      thumbUrl = $(parentSelect + "#thumbUrl").val() || $(parentSelect + "#thumbUrl").attr('placeholder');
 
     let totalVidDur = hour * 3600 + minute * 60 + second,
-      grid = Math.round(Math.sqrt(totalVidDur / interval));
+      grid = Math.round(Math.sqrt(totalVidDur / interval)) + 1;
 
     let ffmpegCmd = `ffmpeg -i ${filename} -filter_complex "select='not(mod(n,${fps*interval}))',scale=${width}:${height},tile=${grid}x${grid}" -frames:v 1 -qscale:v 3 -an ${filename}_mosaic.jpg`;
     let nodeCmd = `node create.js ${totalVidDur} '${thumbUrl}' '${filename}_mosaic.vtt' ${interval} ${width} ${height} ${grid}`
@@ -40,36 +23,36 @@ const genCode = {
     $('#nodeCmd').html(nodeCmd);
   }
 };
-$("#generate").click(() => {
-  genCode.copyToClipboard($(".output"));
-});
+document.addEventListener("DOMContentLoaded", () => {
+  let params = new URLSearchParams(window.location.search),
+    language = params.get("lang");
+  for (let elem of d.querySelectorAll('copy-button')) {
+    elem.innerHTML = `<button type="button" class="btn btn-success" data-clipboard-target='${elem.getAttribute('data-target')}'><i class="fad fa-copy"></i></button>`;
+  }
+  for (let elem of d.querySelectorAll('input-field')) {
+    let
+      title = ((language == "en") && elem.getAttribute('t-en')) || elem.getAttribute('t-vi') || "",
+      placeholder = elem.getAttribute('placeholder') || "",
+      id = elem.getAttribute('_id') || "",
+      type = elem.getAttribute('type') || "";
+    elem.innerHTML = `
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">${title}</span>
+      </div>
+      <input oninput="genCode.changeResult()" type="${type}" class="form-control" placeholder="${placeholder}" aria-label="${placeholder}" id="${id}">
+    </div>`;
+  }
 
-for (let i = 0; i < d.querySelectorAll('copy-button').length; i++) {
-  let elem_ = d.querySelectorAll('copy-button')[i],
-    elem = $(elem_);
-  elem.html(`<button type="button" class="btn btn-success" data-clipboard-target='${elem.attr('data-target')}'><i class="fad fa-copy"></i></button>`);
-}
-for (let i = 0; i < d.querySelectorAll('input-field').length; i++) {
-  let elem = $(d.querySelectorAll('input-field')[i]),
-    title = elem.attr('title'),
-    placeholder = elem.attr('placeholder'),
-    id = elem.attr('_id'),
-    type = elem.attr('type');
-  if (!title) title = "";
-  if (!placeholder) placeholder = "";
-  if (!id) id = "";
-  if (!type) type = "";
-  elem.html(`
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">${title}</span>
-    </div>
-    <input oninput="genCode.changeResult()" type="${type}" class="form-control" placeholder="${placeholder}" aria-label="${placeholder}" id="${id}">
-  </div>`);
-}
-genCode.changeResult();
+  genCode.changeResult();
 
-$('copy-button').on('click', function () {
-  new ClipboardJS('copy-button .btn');
-  let targetElem = $($(this).children('button').attr('data-target'));
+  $('copy-button').on('click', () => new ClipboardJS('copy-button .btn'));
+
+  if (language == "en") {
+    for (let elem of document.querySelectorAll("i-18n")) elem.innerHTML = elem.getAttribute("en");
+    // for (let elem of document.querySelectorAll('*[t-en]')) elem.setAttribute("title", elem.getAttribute("ph-en"));
+  } else {
+    for (let elem of document.querySelectorAll("i-18n")) elem.innerHTML = elem.getAttribute("vi");
+    // for (let elem of document.querySelectorAll('*[t-vi]')) elem.setAttribute("title", elem.getAttribute("ph-vi"));
+  }
 });

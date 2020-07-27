@@ -11,10 +11,7 @@ $border_normal: 5px;
 $bg_alpha_moderate: .2;
 $bg_alpha_normal: .1;
 $margin-length: 4em;
-$brand_font: "Josefin Sans",
-Arial,
-Helvetica,
-sans-serif;
+$brand_font: "Josefin Sans";
 $shadingColor: #ebebeb;
 $gradient: linear-gradient(to right, #159957, #008e7e, #00809b, #006da5, #155799);
 $btnHoverColor: rgb(180, 180, 180);
@@ -133,10 +130,6 @@ header {
   width: 100%;
   margin: 2em auto;
   text-align: center;
-
-  button:nth-child(1) {
-    margin-right: 1em;
-  }
 }
 
 .btn-light {
@@ -158,19 +151,6 @@ header {
   .essentials {
     display: flex;
     width: 100%;
-
-    .title {
-      margin: 1em 1em 1em 0;
-    }
-
-    .previewThumbnail {
-      margin-top: 1em;
-    }
-
-    // .poster {
-    //   margin: 1em;
-    // }
-
   }
 
   .episode_container {
@@ -187,21 +167,12 @@ header {
       background-color: white;
     }
 
-    #singleCapCtn {
+    .singleCapCtn {
       display: flex;
       width: 100%;
 
       input {
         @extend %border;
-
-        &:nth-child(1),
-        &:nth-child(3) {
-          margin: 0 0 1em 0;
-        }
-
-        &:nth-child(2) {
-          margin: 0 1em 0 1em;
-        }
       }
     }
 
@@ -209,15 +180,10 @@ header {
       display: flex;
       width: 100%;
       flex-direction: column;
-
-      .input-group {
-        margin-bottom: 1em;
-      }
     }
 
     .addRemoveEpBtn {
       text-align: center;
-      margin-bottom: 1em;
     }
   }
 
@@ -277,4 +243,23 @@ header {
     margin: 2em auto 0 auto;
     @extend %outer_frame;
   }
+}
+
+.ml {
+  margin-left: 1em;
+}
+
+.mr {
+  margin-right: 1em;
+}
+
+.mt {
+  margin-top: 1em;
+}
+
+.mb {
+  margin-bottom: 1em;
+}
+.nowarp {
+  white-space: nowrap;
 }

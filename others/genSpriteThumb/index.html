@@ -5,15 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Movie name generator</title>
+  <title>SpriteThumb Generator</title>
+  <link rel="shortcut icon" href="https://archive.delnegend.xyz/favicon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/fa-pro@5.13.0/css/all.min.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
+  <link rel="stylesheet" href="dist/vendor.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" 
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="./dist/vendor.min.css">
 </head>
 
 <body>
@@ -21,43 +22,43 @@
 
   <div class="container">
     <div class="flexRow">
-      <input-field _id="filename" title="Tên file" style="margin-left: 0;" type="text" placeholder="example.mp4"></input-field>
-      <input-field _id="fps" title="Khung hình/giây" type="number" placeholder="24"></input-field>
-      <input-field _id="thumbUrl" title="Link ảnh trực tiếp" type="text" placeholder="mosaic.jpg"></input-field>
+      <input-field _id="filename" t-vi="Tên file" t-en="File name" style="margin-left: 0;" type="text" placeholder="example.mp4"></input-field>
+      <input-field _id="fps" t-vi="Khung hình/giây" t-en="Framerate" type="number" placeholder="24"></input-field>
+      <input-field _id="thumbUrl" t-vi="Link ảnh thumb trực tiếp" t-en="Direct link thumbnail" type="text" placeholder="mosaic.jpg"></input-field>
     </div>
 
     <div class="flexRow">
-      <span style="white-space: nowrap;">Thời lượng video&nbsp;</span>
-      <input-field _id="hour" title="Giờ" type="number" placeholder="1"></input-field>
-      <input-field _id="minute" title="Phút" type="number" placeholder="0"></input-field>
-      <input-field _id="second" title="Giây" type="number" placeholder="0"></input-field>
+      <span style="white-space: nowrap;"><i-18n vi="Thời lượng video" en="Video's duration"></i-18n>&nbsp;</span>
+      <input-field _id="hour" t-vi="Giờ" t-en="Hour(s)" type="number" placeholder="0"></input-field>
+      <input-field _id="minute" t-vi="Phút" t-en="Minute(s)" type="number" placeholder="0"></input-field>
+      <input-field _id="second" t-vi="Giây" t-en="Second(s)" type="number" placeholder="0"></input-field>
     </div>
 
     <div class="flexRow">
-      <span style="white-space: nowrap;">Kích cỡ ảnh thumb (px)&nbsp;</span>
-      <input-field _id="width" title="Ngang" type="number" placeholder="320"></input-field>
-      <input-field _id="height" title="Dọc" type="number" placeholder="180"></input-field>
+      <span style="white-space: nowrap;"><i-18n vi="Kích cỡ ảnh thumb (px)" en="Thumbnail size"></i-18n>&nbsp;</span>
+      <input-field _id="width" t-vi="Ngang" t-en="Width" type="number" placeholder="320"></input-field>
+      <input-field _id="height" t-vi="Dọc" t-en="Height" type="number" placeholder="180"></input-field>
     </div>
     <div class="flexRow">
-      <input-field _id="interval" title="Tạo 1 bức mỗi (giây)" style="margin-left: 0;" type="number" placeholder="5"></input-field>
+      <input-field _id="interval" t-vi="Tạo 1 bức mỗi [giây]" t-en="Create a thumb image every [second(s)]" style="margin-left: 0;" type="number" placeholder="5"></input-field>
     </div>
   </div>
 
 
   <div class="outputCtn flexCol">
     <div class="flexRow">
-      <span>Tạo file jpg</span>
+      <span><i-18n vi="Tạo file jpg" en="Generate sprite thumb"></i-18n></span>
       <div class="output" id="ffmpegCmd"></div>
       <copy-button data-target="#ffmpegCmd"></copy-button>
     </div>
     <div class="flexRow">
-      <span>Tạo file vtt</span>
+      <span><i-18n vi="Tạo file vtt" en="Generate vtt file"></i-18n></span>
       <div class="output" id="nodeCmd"></div>
       <copy-button data-target="#nodeCmd"></copy-button>
     </div>
   </div>
 
 </body>
-<script src="./src/index.js"></script>
+<script src="src/index.js"></script>
 
 </html>
