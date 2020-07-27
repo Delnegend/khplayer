@@ -74,7 +74,7 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
   - Ấn `Hoàn thành` sẽ hiện ra 2 button: 
     - Ấn `Tạo mới` nếu cần tạo 1 playlist player mới
       - Nhấn `Tải file JSON`, upload lên cloud, lấy link direct ([1](#direct-link-tips))
-      - Nhấn `Sao chép` và dán vào vị trí muốn đặt playlist player trên webpage. Phần `path` là đường dẫn tới file json, sửa lại nếu cần thiết.
+      - Nhấn `Sao chép` và dán vào vị trí muốn đặt playlist player trên webpage. Phần `data` là đường dẫn tới file json, sửa lại nếu cần thiết.
     - Ấn `Đã có` nếu muốn thêm dữ liệu vào file json sẵn có:
       - hấn `Sao chép` và dán vào vị trí mong muốn trong file json cần edit.<br>
         Tham khảo [JSON là gì - TOPDev](https://topdev.vn/blog/json-la-gi/).<br>

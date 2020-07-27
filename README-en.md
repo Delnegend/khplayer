@@ -70,7 +70,7 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
   - After hitting `Complete`, there'll be 2 button 
     - `Create new` for, well, create a new one.
       - Hit `Download JSON file`, upload to cloud, get direct link ([1](#direct-link-tips)).
-      - Hit `Copy` and paste into a desired position in your webpage. Edit `path` if necessary.
+      - Hit `Copy` and paste into a desired position in your webpage. Edit `data` attribute if necessary.
     - `Existed` if you want to add data into an existed json file:
       - Hit `copy` and paste into a desired position in the json file.<br>
 
