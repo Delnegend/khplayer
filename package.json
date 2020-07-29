@@ -4,14 +4,15 @@
   "description": "A HTML5 playlist player powered by Plyr",
   "main": "gulpfile.js",
   "scripts": {
-    "server": "run-s rm:dist copy:assets sass-gulp-livesv",
+    "server": "run-s rm:dist mkdir:dist copy:assets sass-gulp-livesv",
     "sass-gulp-livesv": "run-p gulp:watch style:watch live-server",
     "live-server": "live-server",
     "gulp:watch": "gulp watch",
     "gulp:build": "gulp build",
     "style:watch": "sass --watch src\\khplayer.scss:dist\\khplayer.min.css others\\genScreen\\src\\style.scss:others\\genScreen\\dist\\vendor.min.css others\\genSpriteThumb\\src\\style.scss:others\\genSpriteThumb\\dist\\vendor.min.css -s compressed",
     "copy:assets": "shx cp src\\blank.mp4 dist && shx cp src\\default_waiting.svg dist",
-    "rm:dist": "shx rm -rf \\dist\\*.* ; rm -rf others\\**\\dist\\*.*"
+    "rm:dist": "shx rm -rf dist ; rm -rf others\\**\\dist\\*.*",
+    "mkdir:dist": "shx mkdir dist"
   },
   "repository": {
     "type": "git",
