@@ -7,7 +7,7 @@
 // jshint esversion: 9
 // jshint expr:true
 
-const KHPlayer = {
+var KHPlayer = {
   // Syntax lát nữa dùng ngắn hơn
   // Sorter syntax for later use
   d: document,
@@ -24,6 +24,21 @@ const KHPlayer = {
     let charactersLength = characters.length;
     for (let i = 0; i < length; i++) result += characters.charAt(Math.floor(Math.random() * charactersLength));
     return "_" + result + btoa(new Date().getTime()).replace(/=/g, "");
+  },
+  one() {
+    this.insertAfter(this.currNode, `<khplayer-container data="${this.currNode.getAttribute("data")}"></khplayer-container>`, true);
+    this.loadCSS("https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css");
+    this.loadCSS("https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6/dist/khplayer.min.css");
+    if (typeof Plyr === 'undefined') this.loadJS("https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js");
+    if (typeof Hls === 'undefined') this.loadJS("https://cdn.jsdelivr.net/npm/hls.js@0.13.2/dist/hls.min.js");
+    let initPlayer = setInterval(() => {
+      if (typeof Plyr !== 'undefined' && typeof Hls !== 'undefined') {
+        clearInterval(initPlayer);
+        let uniqueKey = KHPlayer.randomString();
+        this.currNode.nextElementSibling.setAttribute("id", uniqueKey);
+        this.init(uniqueKey);
+      }
+    }, 100);
   },
   // Init Plyr
   // Khởi tạo Plyr
@@ -378,14 +393,33 @@ const KHPlayer = {
     return template.content.firstChild;
   },
   // Source: https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript
+  loadCSS(url) {
+    let link = document.createElement("link");
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = url;
+    document.head.appendChild(link);
+  },
+  loadJS(url, callback) {
+    // loadScript(url, callback) {
+    // return new Promise(resolve => {
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    document.head.appendChild(script);
+    // });
+
+    // }
+  },
+  currNode: document.currentScript,
   customConfigPath: document.currentScript.getAttribute("config"),
-  // All videos' jsons' data
-  data: {},
-  // for Plyr to interact
-  plyr: {}
-};
-document.addEventListener("DOMContentLoaded", async () => {
-  let defaultConfig = {
+  configurator: {
     defaultQuality: 1080,
     seekTime: 5,
     invertTime: false,
@@ -455,20 +489,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         confirm: ''
       }
     },
-  };
+  },
+  // All videos' jsons' data
+  data: {},
+  // for Plyr to interact
+  plyr: {}
+};
+document.addEventListener("DOMContentLoaded", async () => {
   let configURL = KHPlayer.customConfigPath,
     customConfigData;
   if (configURL) customConfigData = await KHPlayer.getJSON(configURL) || {};
-  let configData = {
-    ...defaultConfig,
+  KHPlayer.configurator = {
+    ...KHPlayer.configurator,
     ...customConfigData
   };
-  KHPlayer.configurator = configData;
-  for await (let elem of document.querySelectorAll('khplayer-container')) {
-    // Assign uniqueKey to avoid conflic between multiple khplayer-container when changeEp() or cloning playlist into embed playlist
-    // Gán uniqueKey để tránh xung đột với các khplayer-container khác khi chuyển tập hay clone playlist lên embed playlist
-    let uniqueKey = KHPlayer.randomString();
-    elem.setAttribute("id", uniqueKey);
-    KHPlayer.init(uniqueKey);
+
+  if (KHPlayer.currNode.getAttribute('data')) {
+    KHPlayer.one();
+  } else {
+    for await (let elem of document.querySelectorAll('khplayer-container')) {
+      // Assign uniqueKey to avoid conflic between multiple khplayer-container when changeEp() or cloning playlist into embed playlist
+      // Gán uniqueKey để tránh xung đột với các khplayer-container khác khi chuyển tập hay clone playlist lên embed playlist
+      let uniqueKey = KHPlayer.randomString();
+      elem.setAttribute("id", uniqueKey);
+      KHPlayer.init(uniqueKey);
+    }
   }
 });
