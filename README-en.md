@@ -144,3 +144,20 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
 - [hls.js](https://github.com/video-dev/hls.js/) - M3U8 library.
 - [FontAwesome](https://fontawesome.com/) - next/prev, toggle menu button.
 - [radiantmediaplayer](https://github.com/radiantmediaplayer) for providing a tutorial to how to create sprite thumbnail.
+
+<hr>
+
+# KHPlayerONE
+KHPlayerONE first introduced in version 6.1. Instead of add 3 scripts files, 2 css files, you only need to load KHPlayer script file, add `data` attribute and place into desired positon in your webpage. For example:
+```html
+...
+</head>
+<body>
+  <div>Content1</div>
+  
+  <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.1/dist/khplayer.min.js" data="data.json"></script>
+  
+  <div>Content2</div>
+</body>
+...
+```
