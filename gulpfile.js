@@ -18,7 +18,7 @@ const {
 
 var khplayerGulp = {
   path: {
-    js: "src/khplayer.js"
+    js: ["src/khplayer.js"]
   },
   export: {
     js() {
