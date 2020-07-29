@@ -21,10 +21,10 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
 ### A. Thêm đống này vào `<head></head>`
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.1/dist/khplayer.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.css">
 <script src="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@0.13.2/dist/hls.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.1/dist/khplayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.js"></script>
 ```
 
 <hr width='50%'>
@@ -155,14 +155,14 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
 <hr>
 
 # KHPlayerONE
-Từ bản 6.1 bổ sung thêm KHPlayerONE, thay vì load 3 file script, 2 file style thì chỉ cần load duy nhất file script của KHPlayer, thêm thuộc tính `data` và đặt vào nơi muốn tạo playlist player, ví dụ
+Từ bản 6.2 bổ sung thêm KHPlayerONE, thay vì load 3 file script, 2 file style thì chỉ cần load duy nhất file script của KHPlayer, thêm thuộc tính `data` và đặt vào nơi muốn tạo playlist player, ví dụ
 ```html
 ...
 </head>
 <body>
   <div>Content1</div>
   
-  <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.1/dist/khplayer.min.js" data="data.json"></script>
+  <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.js" data="data.json"></script>
   
   <div>Content2</div>
 </body>
