@@ -24,6 +24,7 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.css">
 <script src="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@0.13.2/dist/hls.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/richtr/NoSleep.js/dist/NoSleep.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.js"></script>
 ```
 
