@@ -1,6 +1,6 @@
 //! ================================================
 //! KHPLayer
-//! Version: 6.0
+//! Version: 6.1
 //! Homepage/repo: https://khplayer.delnegend.xyz --redirect--> https://github.com/DELNEGEND/khplayer
 //! License: The MIT License (MIT)
 //! ================================================
@@ -27,12 +27,14 @@ var KHPlayer = {
   },
   one() {
     this.insertAfter(this.currNode, `<khplayer-container data="${this.currNode.getAttribute("data")}"></khplayer-container>`, true);
-    this.loadCSS("https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css");
-    this.loadCSS("https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6/dist/khplayer.min.css");
-    if (typeof Plyr === 'undefined') this.loadJS("https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js");
-    if (typeof Hls === 'undefined') this.loadJS("https://cdn.jsdelivr.net/npm/hls.js@0.13.2/dist/hls.min.js");
+    this.loadCSS("https://cdn.jsdelivr.net/gh/sampotts/plyr/dist/plyr.css");
+    this.loadCSS("https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/khplayer.min.css");
+    if (typeof Plyr === 'undefined') this.loadJS("https://cdn.jsdelivr.net/gh/sampotts/plyr/dist/plyr.min.js");
+    if (typeof Hls === 'undefined') this.loadJS("https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js");
+    if (typeof NoSleep === 'undefined') this.loadJS("https://cdn.jsdelivr.net/gh/richtr/NoSleep.js/dist/NoSleep.min.js");
     let initPlayer = setInterval(() => {
-      if (typeof Plyr !== 'undefined' && typeof Hls !== 'undefined') {
+      let check = typeof Plyr && typeof Hls && typeof NoSleep;
+      if (check !== "undefined") {
         clearInterval(initPlayer);
         let uniqueKey = KHPlayer.randomString();
         this.currNode.nextElementSibling.setAttribute("id", uniqueKey);
@@ -94,7 +96,7 @@ var KHPlayer = {
     // -- Plyr đc khởi tạo ở chỗ này --
     // -- Plyr get init here --
     this.plyr[uniqueKey] = await this.initPlyr(uniqueKey);
-    this.tweaks(uniqueKey);
+    this.id(uniqueKey) && this.tweaks(uniqueKey);
 
     // -- Phần này detect lịch sử xem --
     // #region -- Detect watching history --
@@ -118,11 +120,10 @@ var KHPlayer = {
         </div>`,
         true
       );
-      khpCtn.querySelector('.plyr>.plyr__controls').setAttribute('hidden', "");
+      khpCtn.querySelector('.plyr>.plyr__controls') && khpCtn.querySelector('.plyr>.plyr__controls').setAttribute('hidden', "");
     }
     //#endregion
   },
-  // 
   tweaks(uniqueKey) {
     let khpCtn = this.id(uniqueKey);
 
@@ -132,6 +133,7 @@ var KHPlayer = {
     // Nút ẩn/hiện embed playlist
     // Toggle embed playlist btn
     // <i class="fas fa-bars fa-lg"></i>
+
     this.insertAfter(
       khpCtn.querySelector(".plyr__controls>.plyr__menu"),
       `<button class="plyr__controls__item plyr__control customBtn" type="button" onclick="KHPlayer.toggleEmbedPlayllist('${uniqueKey}')">
@@ -298,6 +300,15 @@ var KHPlayer = {
     khpCtn.removeEventListener('keydown', adjustSpeed);
     khpCtn.addEventListener('keydown', adjustSpeed);
 
+    // Source: https://github.com/richtr/NoSleep.js
+    // Giữ màn hình điện thoại luôn sáng khi đang phát
+    let noSleep = new NoSleep();
+    this.plyr[uniqueKey][0].on('playing', () => {
+      noSleep.enable();
+    });
+    this.plyr[uniqueKey][0].on('paused', () => {
+      noSleep.disable();
+    });
   },
   toggleEmbedPlayllist(uniqueKey, hideOnly = false) {
     let elem = this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']`);
@@ -313,8 +324,10 @@ var KHPlayer = {
   },
   insertAfter(elem, data, string2Elem = false) {
     // Source: https://github.com/nefe/You-Dont-Need-jQuery#3.7
-    if (!string2Elem) elem.parentNode.insertBefore(data, elem.nextSibling);
-    if (string2Elem) elem.parentNode.insertBefore(this.string2Node(data), elem.nextSibling);
+    if (elem) {
+      if (!string2Elem) elem.parentNode.insertBefore(data, elem.nextSibling);
+      if (string2Elem) elem.parentNode.insertBefore(this.string2Node(data), elem.nextSibling);
+    }
   },
   insertBefore(elem, data, string2Elem = false) {
     if (string2Elem) elem.parentNode.insertBefore(this.string2Node(data), elem);
