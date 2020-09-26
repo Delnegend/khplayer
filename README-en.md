@@ -21,10 +21,10 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/khplayer.min.css">
 <script src="https://cdn.jsdelivr.net/gh/sampotts/plyr@3.6.2/dist/plyr.min.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@0.13.2/dist/hls.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/khplayer.min.js"></script>
 ```
 
 <hr width='50%'>
@@ -137,13 +137,6 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
 
 </details>
 </div>
-<hr>
-
-# Credit
-- [Plyr](https://plyr.io) - APIs, player, themes,...
-- [hls.js](https://github.com/video-dev/hls.js/) - M3U8 library.
-- [FontAwesome](https://fontawesome.com/) - next/prev, toggle menu button.
-- [radiantmediaplayer](https://github.com/radiantmediaplayer) for providing a tutorial to how to create sprite thumbnail.
 
 <hr>
 
@@ -155,9 +148,18 @@ KHPlayerONE first introduced in version 6.2. Instead of add 3 scripts files, 2 c
 <body>
   <div>Content1</div>
   
-  <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer@6.2/dist/khplayer.min.js" data="data.json"></script>
+  <script src="https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/khplayer.min.js" data="data.json"></script>
   
   <div>Content2</div>
 </body>
 ...
 ```
+
+<hr>
+
+# Credit
+- [Plyr](https://plyr.io) - APIs, player, themes,...
+- [hls.js](https://github.com/video-dev/hls.js/) - M3U8 library.
+- [FontAwesome](https://fontawesome.com/) - next/prev, toggle menu button.
+- [radiantmediaplayer](https://github.com/radiantmediaplayer) - create sprite thumbnail.
+- [NoSleep.js](https://github.com/richtr/NoSleep.js) - keep screen on when playing back on mobile devices.
