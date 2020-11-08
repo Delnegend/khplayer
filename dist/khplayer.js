@@ -108,7 +108,7 @@ confirmi18n = this.configurator.i18n.continueWatchingConfirm;
 this.insertAfter(
 khpCtn.querySelector('.plyr>.plyr__control'),
 `<div class="systemDetectHistory">
-<div class="text">${confirmi18n.continueWatching} ${KHPlayer.data[uniqueKey][playingDataJSON.epIndex].title} ${confirmi18n.at} ${new Date(playingDataJSON.time * 1000).toISOString().substr(11, 8)}${confirmi18n.confirm}</div>
+<div class="text">${confirmi18n.continueWatching} <b>${KHPlayer.data[uniqueKey][playingDataJSON.epIndex].title}</b> ${confirmi18n.at} <b>${new Date(playingDataJSON.time * 1000).toISOString().substr(11, 8)}</b>${confirmi18n.confirm}</div>
 <div class="actions">
 <div class="confirmBtn">
 <div onclick='KHPlayer.acceptContinue("${uniqueKey}", ${playingDataJSON.epIndex}, ${playingDataJSON.time})' class="buttonInner">${confirmi18n.yes}</div>
@@ -123,6 +123,13 @@ true
 khpCtn.querySelector('.plyr>.plyr__controls') && khpCtn.querySelector('.plyr>.plyr__controls').setAttribute('hidden', "");
 }
 //#endregion
+
+khpCtn.querySelector('.plyr').addEventListener('click', () => {
+if (khpCtn.querySelector('.systemDetectHistory').classList.contains('hideAlert') && !this.plyr[uniqueKey][0].source) {
+khpCtn.querySelector("ul.KHPPlaylistContainer>li:nth-child(1)").click();
+}
+});
+
 },
 tweaks(uniqueKey) {
 let khpCtn = this.id(uniqueKey);
@@ -447,6 +454,17 @@ seek: true
 },
 defaultPoster: "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/default_wating.svg",
 blankVideo: "https://cdn.jsdelivr.net/gh/DELNEGEND/khplayer/dist/blank.mp4",
+},
+// All videos' jsons' data
+data: {},
+// for Plyr to interact
+plyr: {}
+};
+document.addEventListener("DOMContentLoaded", async () => {
+let configURL = KHPlayer.customConfigPath,
+customConfigData = {},
+lang = {},
+lang_vi = {
 i18n: {
 restart: 'Khởi động lại',
 rewind: 'Tua trước {seektime}s',
@@ -495,25 +513,40 @@ nextEpisode: 'Tập tiếp theo',
 previousEpisode: 'Tập trước',
 toggleEmbedPlayllist: 'Danh sách tập',
 continueWatchingConfirm: {
-yes: 'Có',
-no: 'Không',
-continueWatching: 'Tiếp tục',
+yes: 'Tiếp tục',
+no: 'Xem từ đầu',
+continueWatching: 'Đang xem',
 at: 'tại',
 confirm: ''
 }
 },
 },
-// All videos' jsons' data
-data: {},
-// for Plyr to interact
-plyr: {}
+lang_en = {
+i18n: {
+nextEpisode: 'Next episode',
+previousEpisode: 'Previous episode',
+toggleEmbedPlayllist: 'Episode list',
+continueWatchingConfirm: {
+yes: 'Continue',
+no: 'Watch from begin',
+continueWatching: 'You were watching',
+at: 'at',
+confirm: ''
+}
+}
 };
-document.addEventListener("DOMContentLoaded", async () => {
-let configURL = KHPlayer.customConfigPath,
-customConfigData;
+
 if (configURL) customConfigData = await KHPlayer.getJSON(configURL) || {};
+
+if (KHPlayer.currNode.getAttribute('vi') !== null) {
+lang = lang_vi;
+} else {
+lang = lang_en;
+}
+
 KHPlayer.configurator = {
 ...KHPlayer.configurator,
+...lang,
 ...customConfigData
 };
 

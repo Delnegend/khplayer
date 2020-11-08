@@ -70,7 +70,6 @@ khplayer-container {
   // Backdrop-filter of CCW window
   --bdft-detect-history: blur(var(--blur-strength));
 
-
   // Màu nền playlist
   // Playlist bg
   --list-bg: rgba(0, 0, 0, 0.8);
@@ -299,7 +298,7 @@ khplayer-container {
         cursor: pointer;
         transition-property: transform, box-shadow;
         overflow: hidden;
-        margin: 5px;
+        margin: 5px 8px;
         text-align: center;
 
         @include hoverZoom(1.1);
