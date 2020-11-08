@@ -1,6 +1,6 @@
 //! ================================================
 //! KHPLayer
-//! Version: 6.3
+//! Version: 6.3.1
 //! Homepage/repo: https://khplayer.delnegend.xyz --redirect--> https://github.com/DELNEGEND/khplayer
 //! License: The MIT License (MIT)
 //! ================================================
