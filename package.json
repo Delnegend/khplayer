@@ -4,7 +4,7 @@
   "description": "A HTML5 playlist player powered by Plyr",
   "main": "gulpfile.js",
   "scripts": {
-    "server": "run-s rm:dist mkdir:dist copy:assets sass-gulp-livesv",
+    "start": "run-s rm:dist mkdir:dist copy:assets sass-gulp-livesv",
     "sass-gulp-livesv": "run-p gulp:watch style:watch live-server",
     "live-server": "live-server",
     "gulp:watch": "gulp watch",
