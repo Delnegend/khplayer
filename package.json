@@ -1,42 +1,39 @@
 {
-  "name": "khplayer",
-  "version": "4.0.0",
-  "description": "A HTML5 playlist player powered by Plyr",
-  "main": "gulpfile.js",
-  "scripts": {
-    "start": "run-s rm:dist mkdir:dist copy:assets sass-gulp-livesv",
-    "sass-gulp-livesv": "run-p gulp:watch style:watch live-server",
-    "live-server": "live-server",
-    "gulp:watch": "gulp watch",
-    "gulp:build": "gulp build",
-    "style:watch": "sass --watch src\\khplayer.scss:dist\\khplayer.min.css others\\genScreen\\src\\style.scss:others\\genScreen\\dist\\vendor.min.css others\\genSpriteThumb\\src\\style.scss:others\\genSpriteThumb\\dist\\vendor.min.css -s compressed",
-    "copy:assets": "shx cp src\\blank.mp4 dist && shx cp src\\default_waiting.svg dist",
-    "rm:dist": "shx rm -rf dist ; rm -rf others\\**\\dist\\*.*",
-    "mkdir:dist": "shx mkdir dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DELNEGEND/khplayer.git"
-  },
-  "author": "Delnegend",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DELNEGEND/khplayer/issues"
-  },
-  "homepage": "https://github.com/DELNEGEND/khplayer#readme",
-  "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-htmlmin": "^5.0.1",
-    "gulp-minify": "^3.1.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sourcemaps": "^2.6.5"
-  },
-  "dependencies": {
-    "gulp-replace": "^1.0.0",
-    "live-server": "^1.2.1",
-    "npm-run-all": "^4.1.5",
-    "sass": "^1.26.11",
-    "shx": "^0.3.2"
-  }
+    "name": "khplayer",
+    "version": "4.0.0",
+    "description": "A HTML5 playlist player powered by Plyr",
+    "main": "gulpfile.js",
+    "scripts": {
+        "build": "run-p gulp:build style:build",
+        "dev": "run-p gulp:watch style:watch ws",
+        "ws": "ws",
+        "gulp:watch": "gulp watch",
+        "gulp:build": "gulp build",
+        "style:watch": "sass --watch src\\khplayer.scss:dist\\khplayer.min.css .\\others\\:.\\others\\",
+        "style:build": "sass src\\khplayer.scss:dist\\khplayer.min.css .\\others\\:.\\others\\ -s compressed"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DELNEGEND/khplayer.git"
+    },
+    "author": "Delnegend",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/DELNEGEND/khplayer/issues"
+    },
+    "homepage": "https://github.com/DELNEGEND/khplayer#readme",
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-concat": "^2.6.1",
+        "gulp-htmlmin": "^5.0.1",
+        "gulp-minify": "^3.1.0",
+        "gulp-rename": "^2.0.0",
+        "gulp-sourcemaps": "^2.6.5",
+        "local-web-server": "^4.2.1"
+    },
+    "dependencies": {
+        "gulp-replace": "^1.0.0",
+        "npm-run-all": "^4.1.5",
+        "sass": "^1.29.0"
+    }
 }
