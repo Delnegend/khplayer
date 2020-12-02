@@ -46,7 +46,7 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
   <img src='others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   - Install [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Fill this form](https://khplayer.delnegend.xyz/others/genSpriteThumbCode/?lang=en), leave `Direct link thumbnail`.
+  - [Fill this form](https://khplayer.delnegend.xyz/others/genSpriteThumb/?lang=en), leave `Direct link thumbnail`.
   - Open `powershell/terminal` > `cd "D:\folder\that\contain\the\video.mp4"` > paste `Generate sprite thumb` > `Enter`.
   - Upload file .jpg to cloud, get direct link ([1](#direct-link-tips)), paste into `Direct link thumbnail` in the form. 
   - [Clone/download this repo](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) or [click here to download](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) and extract it.

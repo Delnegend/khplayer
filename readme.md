@@ -51,7 +51,7 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
   <img src='others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   - Cài [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Điền form này](https://khplayer.delnegend.xyz/others/genSpriteThumbCode/), chưa cần điền `Link ảnh trực tiếp`.
+  - [Điền form này](https://khplayer.delnegend.xyz/others/genSpriteThumb/), chưa cần điền `Link ảnh trực tiếp`.
   - Mở `powershell/terminal` > `cd "D:\thư\mục\chứa\file\video.mp4"` > dán câu lệnh `Tạo file jpg` > `Enter`.
   - Upload file .jpg lên cloud, lấy link direct ([1](#direct-link-tips)) rồi dán vào `Link ảnh trực tiếp` ([1](#direct-link-tips)) trong form trên. 
   - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
