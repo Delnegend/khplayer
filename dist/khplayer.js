@@ -1,6 +1,6 @@
 //! ================================================
 //! KHPLayer
-//! Version: 6.3.2
+//! Version: 6.3.3
 //! Homepage/repo: https://khplayer.delnegend.xyz --redirect--> https://github.com/DELNEGEND/khplayer
 //! License: The MIT License (MIT)
 //! ================================================
@@ -126,7 +126,8 @@ khpCtn.querySelector('.plyr>.plyr__controls') && khpCtn.querySelector('.plyr>.pl
 
 khpCtn.querySelector('.plyr').addEventListener('click', () => {
 if (playingData) {
-if (khpCtn.querySelector('.systemDetectHistory').classList.contains('hideAlert') && !this.plyr[uniqueKey][0].source)
+let a = khpCtn.querySelector('.systemDetectHistory');
+if (a && a.classList.contains('hideAlert') && !this.plyr[uniqueKey][0].source)
 khpCtn.querySelector("ul.KHPPlaylistContainer>li:first-child").click();
 } else {
 if (!this.plyr[uniqueKey][0].source) {
@@ -314,12 +315,14 @@ khpCtn.addEventListener('keydown', adjustSpeed);
 // Source: https://github.com/richtr/NoSleep.js
 // Giữ màn hình điện thoại luôn sáng khi đang phát
 let noSleep = new NoSleep();
-this.plyr[uniqueKey][0].on('playing', () => {
+// this.plyr[uniqueKey][0].on('stopped', () => {
+//noSleep.disable();
+//console.log("paused");
+// });
+// this.plyr[uniqueKey][0].on('playing', () => {
+//noSleep.enable();
+// });
 noSleep.enable();
-});
-this.plyr[uniqueKey][0].on('paused', () => {
-noSleep.disable();
-});
 },
 toggleEmbedPlayllist(uniqueKey, hideOnly = false) {
 let elem = this.s(`.EmbedKHPPlaylist[key='${uniqueKey}']`);
