@@ -1,7 +1,7 @@
 <img src="dist/default_waiting.svg" width="100%" height="auto">
 
 ## **Tính năng chính**
-Generate được một playlist player [như thế này](https://khplayer.delnegend.xyz/others/demo/) mà không động đến CSS, JS
+Generate được một playlist player [như thế này](https://khplayer.delnegend.com/others/demo/) mà không động đến CSS, JS
 
 <img src='others/README_Data/khplayer-demo.png'>
 
@@ -51,7 +51,7 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
   <img src='others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   - Cài [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Điền form này](https://khplayer.delnegend.xyz/others/genSpriteThumb/), chưa cần điền `Link ảnh trực tiếp`.
+  - [Điền form này](https://khplayer.delnegend.com/others/genSpriteThumb/), chưa cần điền `Link ảnh trực tiếp`.
   - Mở `powershell/terminal` > `cd "D:\thư\mục\chứa\file\video.mp4"` > dán câu lệnh `Tạo file jpg` > `Enter`.
   - Upload file .jpg lên cloud, lấy link direct ([1](#direct-link-tips)) rồi dán vào `Link ảnh trực tiếp` ([1](#direct-link-tips)) trong form trên. 
   - [Clone/download repo này](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) hoặc [ấn đây để tải xuống](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) và giải nén.
@@ -64,14 +64,14 @@ v5 xem tại [đây](others/README_KHPlayer_v5.md)
     <summary>File phụ đề .vtt (nếu muốn)</summary>
   
   - Convert .ass hay .srt sang .vtt: [Google](https://google.com)
-  - Kiểm tra .vtt "chuẩn" [quuz.org/webvtt/](https://quuz.org/webvtt/) | [dự phòng](https://khplayer.delnegend.xyz/others/VTT_Validation/)
+  - Kiểm tra .vtt "chuẩn" [quuz.org/webvtt/](https://quuz.org/webvtt/) | [dự phòng](https://khplayer.delnegend.com/others/VTT_Validation/)
   - Upload lên cloud không bị chặn [CORS](https://topdev.vn/blog/cors-la-gi/), lấy link direct ([1](#direct-link-tips)).
   
   </details>
 <hr width='50%'>
 
 ### C. Build lên thành player
-  - Điền form [này](https://khplayer.delnegend.xyz/others/genScreen) (DL: direct link)<br>
+  - Điền form [này](https://khplayer.delnegend.com/others/genScreen) (DL: direct link)<br>
   - Ấn `Hoàn thành` sẽ hiện ra 2 button: 
     - Ấn `Tạo mới` nếu cần tạo 1 playlist player mới
       - Nhấn `Tải file JSON`, upload lên cloud, lấy link direct ([1](#direct-link-tips))

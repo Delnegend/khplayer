@@ -17,7 +17,7 @@ Framework Plyr
 <hr width='50%'>
 
 ### C. Build lên thành player
-  - Điền form [này](https://khplayer.delnegend.xyz/others/genScreen).<br> (DL viết tắt cho direc link - link trực tiếp)
+  - Điền form [này](https://khplayer.delnegend.com/others/genScreen).<br> (DL viết tắt cho direc link - link trực tiếp)
   Sau khi ấn "Hoàn thành" sẽ hiện ra 2 button:
   - Nếu trên webpage chưa có `<script src="khplayer.js"></script>`, nhấn "Tạo mới":
     

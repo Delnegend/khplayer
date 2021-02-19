@@ -1,7 +1,7 @@
 <img src="dist/default_waiting.svg" width="100%" height="auto">
 
 ## **Main feature**
-Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/demo/) without touching CSS or JS.
+Generate a playlist player [like this](https://khplayer.delnegend.com/others/demo/) without touching CSS or JS.
 
 <img src='others/README_Data/khplayer-demo.png'>
 
@@ -46,7 +46,7 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
   <img src='others/README_Data/sprite-thumb-demo.png' style="max-width: 326px; width: 100%; height: auto">
 
   - Install [NodeJS](https://nodejs.org/), [ffmpeg](https://ffmpeg.org/download.html).
-  - [Fill this form](https://khplayer.delnegend.xyz/others/genSpriteThumb/?lang=en), leave `Direct link thumbnail`.
+  - [Fill this form](https://khplayer.delnegend.com/others/genSpriteThumb/?lang=en), leave `Direct link thumbnail`.
   - Open `powershell/terminal` > `cd "D:\folder\that\contain\the\video.mp4"` > paste `Generate sprite thumb` > `Enter`.
   - Upload file .jpg to cloud, get direct link ([1](#direct-link-tips)), paste into `Direct link thumbnail` in the form. 
   - [Clone/download this repo](https://github.com/radiantmediaplayer/rmp-create-vtt-thumbnails) or [click here to download](https://github.com/DELNEGEND/khplayer/blob/master/others/README_Data/rmp-create-vtt-thumbnails.zip?raw=true) and extract it.
@@ -59,14 +59,14 @@ Generate a playlist player [like this](https://khplayer.delnegend.xyz/others/dem
     <summary>VTT caption (optional)</summary>
   
   - Convert .ass, .srt to .vtt: [Google](https://google.com)
-  - Validate VTT: [quuz.org/webvtt/](https://quuz.org/webvtt/) | [backup site](https://khplayer.delnegend.xyz/others/VTT_Validation/)
+  - Validate VTT: [quuz.org/webvtt/](https://quuz.org/webvtt/) | [backup site](https://khplayer.delnegend.com/others/VTT_Validation/)
   - Upload to cloud doesn't have CORS blocking, get direct link ([1](#direct-link-tips)).<br>
   
   </details>
 <hr width='50%'>
 
 ### C. Build into playlist
-  - Fill [this form](https://khplayer.delnegend.xyz/others/genScreen/?lang=en) (DL: direct link)<br>
+  - Fill [this form](https://khplayer.delnegend.com/others/genScreen/?lang=en) (DL: direct link)<br>
   - After hitting `Complete`, there'll be 2 button 
     - `Create new` for, well, create a new one.
       - Hit `Download JSON file`, upload to cloud, get direct link ([1](#direct-link-tips)).
