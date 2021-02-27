@@ -13,8 +13,8 @@
     "tracks": [
       {
         "kind": "subtitles",
-        "label": "tiếng Việt",
-        "srclang": "VN",
+        "label": "English",
+        "srclang": "EN",
         "src": "demo.vtt"
       }
     ],
