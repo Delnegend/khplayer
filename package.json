@@ -8,8 +8,8 @@
         "live-server": "live-server",
         "gulp:watch": "gulp watch",
         "gulp:build": "gulp build",
-        "style:watch": "sass --watch src\\khplayer.scss:dist\\khplayer.min.css others\\:others\\",
-        "style:build": "sass src\\khplayer.scss:dist\\khplayer.min.css others\\:others\\ -s compressed"
+        "style:watch": "sass --watch src\\khplayer.scss:dist\\khplayer.min.css others\\:others\\ --no-source-map",
+        "style:build": "sass src\\khplayer.scss:dist\\khplayer.min.css others\\:others\\ -s compressed --no-source-map"
     },
     "repository": {
         "type": "git",
