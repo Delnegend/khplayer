@@ -12,5 +12,6 @@
     "yarn.lock": true,
     "yarn-error.log": true,
     "LICENSE": true
-  }
+  },
+  "liveServer.settings.port": 5501
 }

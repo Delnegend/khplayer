@@ -4,7 +4,7 @@
     "main": "gulpfile.js",
     "scripts": {
         "build": "run-p gulp:build style:build",
-        "dev": "run-p gulp:watch style:watch live-server",
+        "dev": "run-p gulp:watch style:watch",
         "live-server": "live-server",
         "gulp:watch": "gulp watch",
         "gulp:build": "gulp build",
@@ -22,6 +22,7 @@
     },
     "homepage": "https://github.com/DELNEGEND/khplayer#readme",
     "devDependencies": {
+        "eslint-config-google": "^0.14.0",
         "gulp": "^4.0.2",
         "gulp-concat": "^2.6.1",
         "gulp-htmlmin": "^5.0.1",
@@ -31,8 +32,8 @@
         "live-server": "^1.2.1"
     },
     "dependencies": {
-        "gulp-replace": "^1.0.0",
+        "gulp-replace": "^1.1.2",
         "npm-run-all": "^4.1.5",
-        "sass": "^1.32.8"
+        "sass": "^1.32.12"
     }
 }
