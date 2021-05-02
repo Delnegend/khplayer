@@ -2,12 +2,12 @@
 khplayer-container {
   --main-color: #c2185b;
   --bg-tp-fx: blur(5px);
-  --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font: "SF Pro Display", sans-serif;
   --confirm-btn-bg: var(--main-color);
   --confirm-btn-text: white;
   --confirm-box-bg: red;
   --confirm-box-text: yellow;
-  --bg-detect-history: rgba(0, 0, 0, .6);
+  --bg-detect-history: rgba(0, 0, 0, 0.6);
   --bdft-detect-history: blur(var(--blur-strength));
   --list-bg: rgba(0, 0, 0, 0.8);
   --ep-bg: rgba(255, 255, 255, 0.1);
@@ -83,13 +83,17 @@ khplayer-container .EmbedKHPPlaylist > div ul {
 }
 khplayer-container .EmbedKHPPlaylist > div .closeEmbed {
   position: absolute;
-  right: 24px;
-  top: 10px;
+  right: 1.5rem;
+  top: 1rem;
   width: 40px;
   height: 40px;
   z-index: 4;
   color: var(--main-color);
   cursor: pointer;
+  transition: transform 0.2s ease-in;
+}
+khplayer-container .EmbedKHPPlaylist > div .closeEmbed:hover {
+  transform: scale(1.1);
 }
 khplayer-container .KHPPlaylistContainer,
 khplayer-container .EmbedKHPPlaylist > div > ul {
@@ -109,6 +113,7 @@ khplayer-container .EmbedKHPPlaylist > div > ul li {
   user-select: none;
   transition-property: color, background-color;
   transition-duration: 0.2s;
+  transition-timing-function: ease-in;
 }
 khplayer-container .KHPPlaylistContainer li:hover,
 khplayer-container .EmbedKHPPlaylist > div > ul li:hover {
@@ -126,7 +131,7 @@ khplayer-container .plyr {
   --plyr-font-smoothing: true;
   --plyr-font-size-large: 20px;
   --plyr-font-size-xlarge: 38px;
-  --plyr-menu-background: rgba(0, 0, 0, .6);
+  --plyr-menu-background: rgba(0, 0, 0, 0.6);
   --plyr-menu-color: white;
   /* KHÔNG XOÁ DÒNG NÀY | DO NOT REMOVE THIS LINE */
   overflow: hidden !important;
@@ -247,4 +252,3 @@ khplayer-container .plyr .plyr__controls .plyr__volume {
     display: none;
   }
 }
-

@@ -1,11 +1,11 @@
-$transition: .4s ease-out;
+$transition: 0.4s ease-out;
 $lineHeight: 40px;
 $btnHoverRad: 8px;
 $box-shadow: 0 2px 10px -7px #000;
 
 // #region Mixins
 @mixin transition {
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transition-timing-function: ease-out;
 }
 
@@ -27,7 +27,7 @@ $box-shadow: 0 2px 10px -7px #000;
   user-select: none !important;
 }
 
-@mixin hoverZoom($x:1.1, $y:0.95) {
+@mixin hoverZoom($x: 1.1, $y: 0.95) {
   @include transition;
 
   &:hover {
@@ -42,57 +42,39 @@ $box-shadow: 0 2px 10px -7px #000;
 // #endregion
 
 khplayer-container {
-  // Màu chủ đạo
   // Theme color
   --main-color: #c2185b;
-  // Hiệu ứng nền (menu của Plyr, cửa sổ xác nhận xem tiếp, embed playlist)
   // Background transparent effect (Plyr's menu, confirm continue watching window, embed playlist)
   --bg-tp-fx: blur(5px);
-  // Main font
-  // Phông chữ chủ đạo
-  --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  // Màu nền nút xác nhận xem tiếp (XNXT)
+  --font: "SF Pro Display", sans-serif;
   // Bg color of confirm continue watching (CCW) button
   --confirm-btn-bg: var(--main-color);
-  // Màu chữ nút XNXT
   // Text color of CCW button
   --confirm-btn-text: white;
-  // Màu nền hộp thông báo XNXT
   // Bg color of CCW alertbox
   --confirm-box-bg: red;
-  // Màu chữ của hộp thông báo XNXT
   // Text color of CCW alertbox
   --confirm-box-text: yellow;
-  // Màu nền cửa sổ XNXT
   // Bg color of CCW window
-  --bg-detect-history: rgba(0, 0, 0, .6);
-  // Hiệu ứng nền cửa sổ XNXT
+  --bg-detect-history: rgba(0, 0, 0, 0.6);
   // Backdrop-filter of CCW window
   --bdft-detect-history: blur(var(--blur-strength));
 
-  // Màu nền playlist
   // Playlist bg
   --list-bg: rgba(0, 0, 0, 0.8);
-  // Màu nền nút chọn tập
   // Select episode bg
   --ep-bg: rgba(255, 255, 255, 0.1);
-  // Màu chữ nút chọn tập
   // Select episode text color
   --ep-text: rgba(255, 255, 255, 0.6);
-  // Màu chữ tập đang phát
   // Playing episode text color
   --ep-active: yellow;
-  // Hiệu ứng nền embed playlist
   // Embed playlist backdrop-filter
   --bdft-embedplaylist: var(--bg-tp-fx);
 
-  // Màu thanh cuộn
   // Scrollbar color
   --scrollbar-color: var(--main-color);
-  // Plyr's menus backdrop-filter
   // Hiệu ứng nền menu plyr
   --bdft-menu: var(--bg-tp-fx);
-
 
   * {
     font-family: var(--font) !important;
@@ -153,7 +135,7 @@ khplayer-container {
       transform: translateX(-100%);
     }
 
-    &>div {
+    & > div {
       position: relative;
       width: 100%;
       height: 100%;
@@ -164,41 +146,44 @@ khplayer-container {
         padding: 0;
         height: 100%;
         position: relative;
-
       }
 
       .closeEmbed {
         $size: 40px;
         position: absolute;
-        right: 24px;
-        top: 10px;
+        right: 1.5rem;
+        top: 1rem;
         width: $size;
         height: $size;
         z-index: 4;
         color: var(--main-color);
         cursor: pointer;
+        transition: transform 0.2s ease-in;
+        &:hover {
+          transform: scale(1.1);
+        }
       }
     }
   }
 
   .KHPPlaylistContainer,
-  .EmbedKHPPlaylist>div>ul {
+  .EmbedKHPPlaylist > div > ul {
     background: var(--list-bg);
-    padding: .2rem;
+    padding: 0.2rem;
     overflow: auto;
     list-style-type: none;
     margin: 0;
 
     li {
-      padding: .5rem;
-      margin: .4rem;
+      padding: 0.5rem;
+      margin: 0.4rem;
       color: var(--ep-text);
       background-color: var(--ep-bg);
       border-radius: 4px;
       user-select: none;
       transition-property: color, background-color;
-      transition-duration: .2s;
-
+      transition-duration: 0.2s;
+      transition-timing-function: ease-in;
       &:hover {
         color: var(--main-color);
         opacity: 1;
@@ -217,7 +202,7 @@ khplayer-container {
     --plyr-font-smoothing: true;
     --plyr-font-size-large: 20px;
     --plyr-font-size-xlarge: 38px;
-    --plyr-menu-background: rgba(0, 0, 0, .6);
+    --plyr-menu-background: rgba(0, 0, 0, 0.6);
     --plyr-menu-color: white;
 
     /* KHÔNG XOÁ DÒNG NÀY | DO NOT REMOVE THIS LINE */
@@ -228,7 +213,7 @@ khplayer-container {
       backdrop-filter: var(--bdft-menu);
     }
 
-    &>.plyr__control[data-plyr="play"] {
+    & > .plyr__control[data-plyr="play"] {
       box-shadow: 0 2px 10px -2px #000;
       backdrop-filter: blur(var(--blur-strength));
     }
@@ -254,8 +239,6 @@ khplayer-container {
         }
       }
     }
-
-
   }
 
   .systemDetectHistory {
@@ -278,7 +261,7 @@ khplayer-container {
       background-color: var(--confirm-box-bg);
       color: var(--confirm-box-text);
       border-radius: $btnHoverRad;
-      padding: .5em 1em;
+      padding: 0.5em 1em;
       text-align: center;
       box-shadow: $box-shadow;
     }
@@ -335,7 +318,6 @@ khplayer-container {
   @media screen and (max-width: 500px) {
     .plyr {
       .plyr__controls {
-
         .nextEpBtn,
         .prevEpBtn,
         button[data-plyr="pip"],
